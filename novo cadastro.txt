@@ -1,0 +1,14 @@
+copiar pasta modelo
+criar cópia do js correspondente
+renomear os arquivos da pasta nova
+dentro do index.php
+	corrigir títulos
+	corrigir endereço do js correspondente
+arquvo js
+	corrigir as referências de chamada de arquivo mvc e campos da tabela
+corrigir o view
+corrigir o model
+corrigir o control
+
+problemas no primeiro teste
+	- falta de correção de campos

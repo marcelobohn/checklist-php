@@ -1,0 +1,182 @@
+body {
+	background: #eaeaea;
+	margin: 15px;
+	scrollbar-face-color: #ECECEC;
+	scrollbar-highlight-color: #ECECEC;
+	scrollbar-3dlight-color: #999;
+	scrollbar-darkshadow-color: #999;
+	scrollbar-shadow-color: #999;
+	scrollbar-arrow-color: #999;
+	scrollbar-track-color: #ECECEC;
+}
+
+img {
+	border: 0px;
+}
+
+label,input {
+	display: block;
+	float: left;
+}
+
+label {
+	text-align: left;
+	width: 95px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+}
+
+fieldset {
+	border: solid 1px #000;
+}
+
+br {
+	clear: left;
+}
+
+A:link.botao {
+	TEXT-DECORATION: none;
+	color: blue;
+	border: solid gray 1px;
+	padding: 4px;
+	margin: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+	background-color: silver;
+	border-radius: 4px;
+}
+
+A:visited.botao {
+	TEXT-DECORATION: none;
+	color: blue;
+}
+
+A:hover.botao {
+	TEXT-DECORATION: none;
+	color: blue; /*TEXT-DECORATION: underline;*/
+	background-color: gray;
+}
+
+A:link {
+	TEXT-DECORATION: none;
+	color: #000066;
+}
+
+A:visited {
+	TEXT-DECORATION: none;
+	color: #000066;
+}
+
+A:hover {
+	TEXT-DECORATION: none;
+	color: #0000FF;
+}
+/* componentes de tela */
+#divPagina {
+	position: center;
+	margin: auto;
+}
+
+#divCorpo {
+	background: #f8f8f8;
+	/*padding: 16px 18px 18px 18px;*/
+	/*border: 1px solid #bbbbbb;*/
+	margin-bottom: 4px;
+	font-size: 14px;
+	font-family: Arial, Helvetica, Verdana;
+	/*width: 600px;*/
+	/*position: left;*/
+	margin: auto;
+	border-radius: 10px 10px;
+}
+
+#divTitulo {
+	background-color: black;
+	color: white;
+	padding-left: 10px;
+	padding-top: 10px;
+	margin-bottom: 5px;
+	border-bottom: 5px solid gray;
+	border-radius: 10px 10px 0px 0px;
+	/*float: left;*/
+}
+
+#divMenu {
+	margin: 10px;
+	clear: both;
+	border-bottom: 1px solid black;
+	height: 30px;
+}
+
+#divLateral {
+	margin-left: 10px;
+	margin-right: 10px;
+	border: 0px solid black;
+	width: 200px;
+	float: left;
+}
+
+#divConteudo {
+	overflow: auto;
+	border-left: 1px dashed black;
+	margin: 10px;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
+#divRodape {
+	margin-left: 0px;
+	border: 0px solid black;
+}
+
+#divLogin {
+	margin: 10px;
+	padding: 40px;
+	border: 20px solid #bbbbbb;
+	border-right: 20px solid #eaeaea;
+	border-top: 20px solid #eaeaea;
+	width: 350px;
+	margin: auto;
+	font-size: 20px;
+	border-radius: 20px;
+}
+
+#divLogin input {
+	font-size: 20px;
+	width: 350px;
+	margin-bottom: 20px;
+}
+
+#registro {
+	border: 0px solid #bbbbbb;
+}
+
+.pergunta {
+	border: 1px dashed #bbbbbb;
+	border-left: 4px solid black;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 4px;
+}
+
+.titulo {
+	font-size: 30px;
+}
+
+.socialmedia-buttons img.fade:hover {
+	opacity: 1 !important;
+	-moz-opacity: 1 !important;
+	-webkit-transition: all 0.2s ease-in;
+	-moz-transition: all 0.2s ease-in;
+	transition: all 0.2s ease;
+}
+
+ul.menu, li.menu {
+ 	list-style-type: none;
+ 	padding: 0px;
+	margin:0px;
+}
+li.menu {
+	height: 90px;
+	border: 1px solid black;
+}
