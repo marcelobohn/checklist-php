@@ -12,10 +12,10 @@ if ($_SESSION['modo']=='de') {
 <li><a href=<?php echo $EnderecoBase.'consulta/'?>>Consulta de check list</a></li>
 </ul>
 <hr />
-<?php echo "Usu·rio logado: ".$_SESSION['usuario']; ?>
+<?php echo "Usu√°rio logado: ".$_SESSION['usuario']; ?>
 <ul class="menu">
 <li><a href=<?php echo $EnderecoBase.'logout.php'?>>Logout</a></li>
-<?php echo ($_SESSION['perfil']=='adm')?('<li><a href=\''.$EnderecoBase.'usuario/\'>Cadastra usu·rios</a></li>'):('')?>
+<?php echo ($_SESSION['perfil']=='adm')?('<li><a href=\''.$EnderecoBase.'usuario/\'>Cadastra usu√°rios</a></li>'):('')?>
 </ul>
 	<?php
 }

@@ -16,7 +16,7 @@ if ($acao=='pesquisa') {
 ?>
 <html lang="pt-br">
 	<head>
-	<meta http-equiv="Content-Type"  content="text/html; charset=iso-8859-1" /> 
+	<meta http-equiv="Content-Type"  content="text/html; charset=utf-8" /> 
 	</head>
 	<body>
 	<?php echo $control->getLista($p,$pagina) ?>
@@ -40,12 +40,12 @@ if ($acao=='form') {
 		$control = new ModeloControl();		
 	}
 ?>
-<html lang="pt-br"><head><meta http-equiv="Content-Type"  content="text/html; charset=iso-8859-1" /> </head><body>
+<html lang="pt-br"><head><meta http-equiv="Content-Type"  content="text/html; charset=utf-8" /> </head><body>
 <fieldset>
 <input type="button" value="Grava" onclick="grava();lista()"> <input type="button" value="Cancela" onclick="lista()"><br />
 <hr />
   <!--<legend>Login:</legend>-->
-<label for="lcodigo">Código </label><input type="hidden" value="<?php if (isset($model)) {echo $model->getIdModelo();} ?>" id="idModelo"><?php if (isset($model)) {echo $model->getIdModelo();} ?><br />
+<label for="lcodigo">CÃ³digo </label><input type="hidden" value="<?php if (isset($model)) {echo $model->getIdModelo();} ?>" id="idModelo"><?php if (isset($model)) {echo $model->getIdModelo();} ?><br />
 <label for="lnome">Nome </label><input type="text" value="<?php if (isset($model)) {echo $model->getNome();} ?>" id="nome" style="width:400px;"><br />
 
 <div id="divPergunta">

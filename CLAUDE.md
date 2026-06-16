@@ -1,17 +1,17 @@
 # Checklist PHP — Documentação
 
-Sistema web de **checklists** em PHP puro, de ~2012. Permite cadastrar perguntas,
-montar modelos de checklist a partir dessas perguntas, responder os checklists e
-consultar os registros respondidos.
+Sistema web de **checklists** em PHP. Permite cadastrar perguntas, montar modelos
+de checklist a partir dessas perguntas, responder os checklists e consultar os
+registros respondidos.
 
-> ⚠️ **Código legado.** Usa a API `mysql_*` (removida no PHP 7), construtores no
-> estilo PHP 4, charset ISO-8859-1 e tem vulnerabilidades sérias (ver
-> [Segurança](#segurança--dívida-técnica)). O objetivo desta documentação é
-> entender e **rodar o projeto como ele era originalmente**, não modernizá-lo.
+> ℹ️ **Origem.** O projeto nasceu em ~2012 em PHP puro (API `mysql_*`, PHP 4-style,
+> ISO-8859-1). Em 2026 o acesso a dados foi **migrado para PDO com prepared
+> statements**, o runtime subiu para **PHP 8** e tudo passou a **UTF-8**. O
+> histórico legado ainda aparece na estrutura (MVC manual, uma pasta por módulo).
 
 ## Como rodar (Docker)
 
-Reproduz o ambiente da época (PHP 5.6 + MySQL 5.7) **sem alterar o fonte**:
+Ambiente: **PHP 8.3 + Apache + MySQL 5.7** (utf8mb4).
 
 ```bash
 docker compose up -d --build
@@ -21,12 +21,11 @@ docker compose up -d --build
 - Login: **admin / admin** (criado pelo seed em `docker/schema.sql`)
 - Banco: exposto no host em `localhost:3307` (root / `123`), opcional para debug
 
-> O código tem a URL base fixa em `template/lateral.php`
-> (`$EnderecoBase = "http://localhost:80/checklist/"`) e um anti-hotlink
+> A URL base é fixa em `template/lateral.php`
+> (`$EnderecoBase = "http://localhost:80/checklist/"`) e há um anti-hotlink
 > (`block.php`) que valida o `SERVER_NAME`. Por isso o projeto é montado no
-> subdiretório `checklist/` e servido na **porta 80** — assim todos os links
-> do menu funcionam sem alterar o fonte. Acessar pela raiz (`http://localhost/`)
-> ou por outra porta quebra a navegação.
+> subdiretório `checklist/` e servido na **porta 80**. Acessar pela raiz
+> (`http://localhost/`) ou por outra porta quebra a navegação.
 
 Para parar / resetar:
 
@@ -35,14 +34,12 @@ docker compose down          # para os containers
 docker compose down -v       # para e APAGA o banco (recria o schema no próximo up)
 ```
 
-### Por que funciona sem mexer no código
+### Conexão com o banco
 
-`conexaoBD.php` tem o host do banco fixo em `mysql_connect('localhost:3306', 'root', '123')`.
-Na API `mysql_*`, o host `localhost` significa conexão via **socket Unix** (a porta é
-ignorada) — como era no servidor LAMP único original. Por isso o `docker-compose.yml`
-compartilha o diretório do socket do MySQL (`/var/run/mysqld`) entre os containers `db`
-e `web` num volume, e o `docker/Dockerfile` aponta `mysql.default_socket` para esse
-caminho. Assim o PHP encontra o banco em `localhost` sem alterar nenhuma linha do fonte.
+`conexaoBD.php` conecta via **PDO** com DSN `host=localhost`. No PDO, `localhost`
+usa **socket Unix**; por isso o `docker-compose.yml` compartilha o diretório do
+socket do MySQL (`/var/run/mysqld`) entre os containers `db` e `web`, e o
+`docker/Dockerfile` aponta `pdo_mysql.default_socket` para esse caminho.
 
 ## Arquitetura
 
@@ -70,7 +67,7 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 
 ### Infraestrutura comum (raiz)
 
-- `conexaoBD.php` — classe `conexaoBD`, abre/fecha conexão MySQL (credenciais fixas).
+- `conexaoBD.php` — classe `conexaoBD` (PDO). Ver [Acesso a dados](#acesso-a-dados-pdo).
 - `template/class.template.php` — *template engine* minimalista: substitui `{Tag}`
   por texto ou pelo conteúdo de um arquivo (via `ob_start`/`include`).
 - `template/start.php` — `session_start()`, inclui `config.php` e monta `$head` (CSS/JS).
@@ -80,6 +77,28 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 - `login.php` / `logout.php` / `dlgLogin.php` — autenticação por sessão.
 - `block.php` — *anti-hotlink* via `HTTP_REFERER` (frágil; incluído no `template/modelo.php`).
 
+### Acesso a dados (PDO)
+
+Toda query passa pela classe `conexaoBD`. O método central é:
+
+```php
+$bd = new conexaoBD();
+// SELECT com parâmetros (prepared statement):
+$stmt = $bd->query("select * from usuario where nome = ?", array($nome));
+$r    = $stmt->fetch();          // uma linha
+$rows = $stmt->fetchAll();       // todas as linhas (itere com foreach)
+$n    = $bd->query("select count(*) from pergunta")->fetchColumn();
+// INSERT/UPDATE/DELETE: passe os valores em $params; id novo via lastInsertId:
+$bd->query("insert into modelo (nome) values (?)", array($nome));
+$novoId = $bd->con->lastInsertId();
+```
+
+Regras seguidas na migração:
+- **Sempre prepared statements** — valores de `$_POST`/`$_REQUEST` vão em `$params`, nunca concatenados.
+- O fetch padrão é `PDO::FETCH_BOTH` (acesso por índice **e** por nome), preservando o código que usava `$r[0]` e `$r['nome']`.
+- `LIMIT` usa inteiros via `(int)` (placeholders de LIMIT não são suportados sem emulação).
+- Erros lançam `PDOException` (`ERRMODE_EXCEPTION`); inclusões/exclusões pontuais tratam com `try/catch`.
+
 ### Fluxo de uso
 
 1. **Login** (`login.php`) grava `$_SESSION['usuario'|'modo'|'perfil']`.
@@ -87,12 +106,12 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
    (alternativas na tabela `resposta`).
 3. **Modelo**: cria um modelo e adiciona perguntas a ele (`modelopergunta.ordem`).
 4. **Registro**: escolhe um modelo → `registro.monta.php` gera o formulário →
-   `registro.grava.php` insere em `registro` + `registroitem`.
+   `registro.grava.php` insere em `registro` + `registroitem` (id via `lastInsertId`).
 5. **Consulta**: filtra por cliente/tarefa e exibe o checklist respondido.
 
 ## Banco de dados
 
-Banco `checklist` (MySQL, latin1). O `.sql` original não existia; o schema foi
+Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema foi
 **reconstruído a partir das queries** e está documentado em `docker/schema.sql`.
 
 | Tabela           | Colunas-chave                                                            |
@@ -105,20 +124,20 @@ Banco `checklist` (MySQL, latin1). O `.sql` original não existia; o schema foi
 | `registro`       | idRegistro, idModelo, rand, data, usuario, versao, base, tarefa, codCliente |
 | `registroitem`   | idRegistro, idPergunta, idResposta                                       |
 
-`registro.rand` é um número aleatório gravado para depois recuperar o `idRegistro`
-recém-inserido com um `SELECT` (gambiarra no lugar de `mysql_insert_id()`).
+> `registro.rand` era usado para recuperar o `idRegistro` recém-inserido via
+> `SELECT` (gambiarra pré-PDO). Após a migração o id vem de `lastInsertId()`; a
+> coluna foi mantida por compatibilidade do schema.
 
 ## Segurança / dívida técnica
 
-Conhecido e **não corrigido de propósito** (rodando "como está"):
+✅ **Corrigido na migração para PDO/PHP 8:**
+- **SQL Injection** — todas as queries usam prepared statements.
+- **`mysql_*`** (removida no PHP 7) → PDO; roda em PHP 8 suportado.
+- **Construtores PHP 4 / `&new`** → `__construct()` / `new`.
+- **ISO-8859-1 + `utf8_encode/decode`** (deprecados) → UTF-8 ponta a ponta.
 
-- **SQL Injection** em praticamente todas as queries (concatenação de `$_POST`/`$_REQUEST`).
-- **Senhas em texto puro**; comparação direta em `login.php`.
-- **Credenciais fixas** no fonte (`conexaoBD.php`: root / `123`).
-- **`mysql_*`** removida no PHP 7 → exige PHP 5.6 (por isso o Docker).
-- **`&new ...`** e construtores PHP 4 → *fatal error* em PHP 7+.
-- **Charset ISO-8859-1** com `utf8_encode/decode` espalhados (mojibake latin1↔utf8).
-- **`block.php`** depende de `HTTP_REFERER` (forjável/ausente) com `preg_match` mal formado.
-
-Para modernizar (migração `mysql_*`→PDO, *prepared statements*, hash de senha,
-UTF-8), tratar como reescrita à parte — fora do escopo de "rodar como está".
+⚠️ **Ainda pendente (próximos passos):**
+- **Senhas em texto puro** — `login.php` compara direto; falta hash (`password_hash`/`password_verify`).
+- **Credenciais fixas** no fonte (`conexaoBD.php`: root / `123`) — deveriam vir de variáveis de ambiente.
+- **`block.php`** depende de `HTTP_REFERER` (forjável/ausente) com `preg_match` frágil.
+- **Sem CSRF / escape de saída** consistente (`htmlspecialchars`) nas views.

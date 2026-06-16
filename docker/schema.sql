@@ -6,12 +6,11 @@
 --   conexaoBD.php, login.php, usuario/*, pergunta/*, modelo/*,
 --   registro/*, consulta/*.
 --
--- Charset latin1 de propósito: o código grava com utf8_encode() e lê
--- com utf8_decode(), o padrão "latin1 guardando bytes utf8" da época.
--- Mantemos latin1 para reproduzir o comportamento original tal como era.
+-- Charset utf8mb4: após a migração para PDO o código trabalha em UTF-8
+-- ponta a ponta (sem utf8_encode/decode).
 -- =====================================================================
 
-SET NAMES latin1;
+SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
@@ -24,7 +23,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   senha     VARCHAR(100) NOT NULL,         -- texto puro no original (sem hash)
   admin     CHAR(1) NOT NULL DEFAULT 'N',  -- 'S' = administrador
   PRIMARY KEY (idUsuario)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Perguntas do checklist
@@ -38,7 +37,7 @@ CREATE TABLE IF NOT EXISTS pergunta (
   marcar     CHAR(1) NOT NULL DEFAULT 'N',
   resposta   CHAR(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (idPergunta)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Alternativas de resposta (para perguntas de múltipla escolha)
@@ -50,7 +49,7 @@ CREATE TABLE IF NOT EXISTS resposta (
   descricao  VARCHAR(255) NOT NULL,
   PRIMARY KEY (idResposta),
   KEY idx_resposta_pergunta (idPergunta)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Modelo de checklist (cabeçalho)
@@ -60,7 +59,7 @@ CREATE TABLE IF NOT EXISTS modelo (
   idModelo INT(11) NOT NULL AUTO_INCREMENT,
   nome     VARCHAR(150) NOT NULL,
   PRIMARY KEY (idModelo)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Associação modelo <-> perguntas, com ordem de exibição
@@ -74,7 +73,7 @@ CREATE TABLE IF NOT EXISTS modelopergunta (
   PRIMARY KEY (idModeloPergunta),
   KEY idx_mp_modelo (idModelo),
   KEY idx_mp_pergunta (idPergunta)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Checklist respondido (cabeçalho do registro)
@@ -95,7 +94,7 @@ CREATE TABLE IF NOT EXISTS registro (
   codCliente VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (idRegistro),
   KEY idx_registro_modelo (idModelo)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------
 -- Respostas dadas em cada checklist respondido (itens do registro)
@@ -108,7 +107,7 @@ CREATE TABLE IF NOT EXISTS registroitem (
   idResposta INT(11) DEFAULT NULL,  -- 1/0 p/ perguntas "marcar"; idResposta p/ múltipla
   PRIMARY KEY (idRegistroItem),
   KEY idx_ri_registro (idRegistro)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 SET FOREIGN_KEY_CHECKS = 1;
 

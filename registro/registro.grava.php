@@ -17,21 +17,19 @@
 
 	$sql = "insert into registro ".
 	"(idModelo, rand, data, usuario, versao, base, tarefa, codCliente) ".
-	"values ".
-	"(".$_REQUEST["idModelo"].", ".$rand.", CURRENT_TIMESTAMP, '".$_POST["usuario"]."', '".$_POST["versao"]."', '".$_POST["base"]."', '".$_POST["tarefa"]."', '".$_POST["cliente"]."' )";	
-	$result = mysql_query( $sql );		
-	if( !$result ) {
-	    echo "Erro na inclus„o do registro! [1]".$bd->chkOnLine($sql)."<br/>";
-	} else {
-	    echo "Incluido com sucesso!<br/>";	
-		
-		$sql = "select idRegistro from registro where rand = ".$rand."";
-		$result = mysql_query( $sql );
-		$r = mysql_fetch_row( $result );
-		$registro = $r[0];
-		echo "Registro gerado: ".$registro."<br/>";		
+	"values (?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?)";
+	try {
+		$bd->query( $sql, array(
+			$_REQUEST["idModelo"], $rand,
+			$_POST["usuario"], $_POST["versao"], $_POST["base"], $_POST["tarefa"], $_POST["cliente"]
+		) );
+		echo "Incluido com sucesso!<br/>";
+		$registro = $bd->con->lastInsertId();
+		echo "Registro gerado: ".$registro."<br/>";
 		$resultado = true;
-	}	
+	} catch (PDOException $e) {
+		echo "Erro na inclus√£o do registro! [1]<br/>";
+	}
 
 
 	if (($_POST) && ($resultado)) {
@@ -39,16 +37,13 @@
 			if (substr($key,0,2) == "r_") {
 			//echo '<br />' . $key . ' = ' . $value;
 			$pergunta = substr($key,2);
-			//$pergunta = parseInt($pergunta);
-			$sql = "insert into registroitem (idRegistro, idPergunta, idResposta) values ";
-			$sql .= "(".$registro.", ".$pergunta.", ".$value.")";	
-			//echo $sql;
-			$result = mysql_query( $sql );		
-			if( !$result ) {
-				echo "Erro na inclus„o ! [2]".$sql."<br/>";
+			$sql = "insert into registroitem (idRegistro, idPergunta, idResposta) values (?, ?, ?)";
+			try {
+				$bd->query( $sql, array( $registro, $pergunta, $value ) );
+				echo "Incluido com sucesso!<br/>";
+			} catch (PDOException $e) {
+				echo "Erro na inclus√£o ! [2]<br/>";
 				$resultado = false;
-			} else {
-				echo "Incluido com sucesso!<br/>";				
 			}
 			}
 			
@@ -63,7 +58,7 @@
 		echo "</script>";
 		echo "<h1>Gravado com sucesso</h1>";
 	} else {
-		echo "<h1>Erros durante a gravaÁ„o</h1>";
+		echo "<h1>Erros durante a grava√ß√£o</h1>";
 		echo "<a href=\"index.php\">voltar</a>";	
 	}
 

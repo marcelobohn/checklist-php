@@ -17,7 +17,7 @@ if ($acao=='pesquisa') {
 	?>
 <html lang="pt-br">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 <?php echo $control->getLista($p,$pagina) ?>
@@ -42,7 +42,7 @@ if ($acao=='form') {
 	?>
 <html lang="pt-br">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 	<fieldset>
@@ -50,7 +50,7 @@ if ($acao=='form') {
 			type="button" value="Cancela" onclick="lista()"><br />
 		<hr />
 		<!--<legend>Login:</legend>-->
-		<label for="lcodigo">Código </label>
+		<label for="lcodigo">CÃ³digo </label>
 			<input type="hidden" value="<?php if (isset($model)) {echo $model->getIdUsuario();} ?>" id="idUsuario"> <?php if (isset($model)) {echo $model->getIdUsuario();} ?><br /> 
 		<label for="lnome">Nome </label>
 			<input type="text" value="<?php if (isset($model)) {echo $model->getNome();} ?>" id="nome" style="width: 400px;"><br /> 

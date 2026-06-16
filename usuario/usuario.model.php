@@ -5,11 +5,11 @@ include_once ("../conexaoBD.php");
 class Usuario
 {
 
-	/* Conexão com o banco de dados */
+	/* ConexÃ£o com o banco de dados */
 	var $bd;
 
 	//construtor
-	function Usuario(){
+	function __construct(){
 		$this->bd = new conexaoBD();
 		$this->idUsuario = 0;
 		$this->nome = "";
@@ -25,7 +25,7 @@ class Usuario
 	var $admin;
 	var $tabela = "usuario";
 
-	/* Métodos get e set das propriedade */
+	/* MÃ©todos get e set das propriedade */
 	function setIdUsuario( $idUsuario )
 	{
 		$this->idUsuario = $idUsuario;
@@ -63,16 +63,13 @@ class Usuario
 	}
 
 	function setUsuario($idUsuario) {
-		$sql = "select * from ".$this->tabela;
-		$sql .= "  where idUsuario = ".$idUsuario."";
-		$result = mysql_query( $sql );
-		$registros = mysql_num_rows( $result );
-		if( $registros > 0 )	{
-			$r = mysql_fetch_assoc( $result );
+		$sql = "select * from ".$this->tabela." where idUsuario = ?";
+		$r = $this->bd->query( $sql, array( $idUsuario ) )->fetch();
+		if( $r )	{
 			$this->idUsuario = $r['idUsuario'];
-			$this->nome = utf8_decode($r['nome']);
-			$this->senha = utf8_decode($r['senha']);
-			$this->admin = utf8_decode($r['admin']);
+			$this->nome = $r['nome'];
+			$this->senha = $r['senha'];
+			$this->admin = $r['admin'];
 			$retorno = true;
 		}
 		else
@@ -81,16 +78,16 @@ class Usuario
 	}
 }
 
-if ($_REQUEST['acao']=='apaga') {
+if (($_REQUEST['acao'] ?? '')=='apaga') {
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new UsuarioControl();
 	$control->apagar($id);
-	echo "Excluído com sucesso";
+	echo "ExcluÃ­do com sucesso";
 	unset($control);
 }
 
-if ($_REQUEST['acao']=='grava') {
+if (($_REQUEST['acao'] ?? '')=='grava') {
 	include_once ($Aplicativo.".control.php");
 
 	$model = new Usuario();

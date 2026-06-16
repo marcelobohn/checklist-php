@@ -5,13 +5,13 @@ include_once ("../conexaoBD.php");
 class Pergunta
 {
 
-	/* Conex„o com o banco de dados */
+	/* Conex√£o com o banco de dados */
 	var $bd;
 	
 	//construtor
-	function Pergunta(){
-		$this->bd = new conexaoBD();		
-		
+	function __construct(){
+		$this->bd = new conexaoBD();
+
 		$this->idPergunta = 0;
 		$this->descricao = "";		
 	}
@@ -24,7 +24,7 @@ class Pergunta
 	var $marcar;
 	var $resposta;
 	
-	/* MÈtodos get e set das propriedade */
+	/* M√©todos get e set das propriedade */
 	function setIdPergunta( $idPergunta )
 	{
 		$this->idPergunta = $idPergunta;
@@ -62,37 +62,33 @@ class Pergunta
 	}
 		
 	function setPergunta($idPergunta) {
-		$sql = "select * from pergunta ";
-		$sql .= "  where idPergunta = ".$idPergunta."";	
-		$result = mysql_query( $sql );
-		$registros = mysql_num_rows( $result );
-		if( $registros > 0 )	{
-			while( $r = mysql_fetch_array( $result ) ){
-				$this->idPergunta = $r['idPergunta'];
-				$this->descricao = utf8_decode($r['descricao']);
-				$this->marcar = $r['marcar'];
-				$this->resposta = $r['resposta'];
-			}
+		$sql = "select * from pergunta where idPergunta = ?";
+		$r = $this->bd->query( $sql, array( $idPergunta ) )->fetch();
+		if( $r )	{
+			$this->idPergunta = $r['idPergunta'];
+			$this->descricao = $r['descricao'];
+			$this->marcar = $r['marcar'];
+			$this->resposta = $r['resposta'];
 			$retorno = true;
 		}
 		else
 			$retorno = false;
-		return $retorno;		
+		return $retorno;
 	}
 	
 }	
 
-if ($_REQUEST['acao']=='apaga') {
+if (($_REQUEST['acao'] ?? '')=='apaga') {
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new PerguntaControl();
-	$control->apagar($id);	
-	echo "ExcluÌdo com sucesso";
+	$control->apagar($id);
+	echo "Exclu√≠do com sucesso";
 	unset($control);
 }
 
-if ($_REQUEST['acao']=='grava') {
-	header("Content-Type: text/html; charset=ISO-8859-1",true);
+if (($_REQUEST['acao'] ?? '')=='grava') {
+	header("Content-Type: text/html; charset=UTF-8",true);
 	include_once ($Aplicativo.".control.php");
 	
 	$model = new Pergunta();

@@ -11,21 +11,20 @@ As perguntas podem ser de dois tipos:
 
 Características:
 
+- Acesso a dados em **PDO com prepared statements** (PHP 8)
 - Telas dinâmicas com JavaScript (jQuery 1.7.1) e chamadas AJAX
 - *Template engine* próprio (substituição de `{tags}`)
 - Organização MVC manual, uma pasta por funcionalidade
 
-> ⚠️ **Projeto legado.** Usa a API `mysql_*` (removida no PHP 7), construtores
-> no estilo PHP 4 e charset ISO-8859-1, além de vulnerabilidades conhecidas
-> (SQL injection, senha em texto puro). Veja [`CLAUDE.md`](CLAUDE.md) para a
-> documentação técnica completa e a lista de dívida técnica. O ambiente Docker
-> abaixo serve para rodar o projeto **como ele era originalmente**, sem alterar
-> o código-fonte.
+> ℹ️ **Origem e migração.** Nasceu em ~2012 em PHP puro (`mysql_*`, PHP 4-style,
+> ISO-8859-1). Foi **migrado para PDO + prepared statements, PHP 8 e UTF-8**,
+> corrigindo SQL injection e as APIs removidas. Detalhes técnicos e dívida
+> técnica restante em [`CLAUDE.md`](CLAUDE.md).
 
 ## Como rodar
 
-Pré-requisito: Docker + Docker Compose. O ambiente reproduz a stack da época
-(PHP 5.6 + Apache + MySQL 5.7) sem modificar o fonte.
+Pré-requisito: Docker + Docker Compose. O ambiente usa
+**PHP 8.3 + Apache + MySQL 5.7** (utf8mb4).
 
 ```bash
 docker compose up -d --build

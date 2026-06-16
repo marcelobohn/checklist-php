@@ -20,8 +20,8 @@ services:
   db:
     image: mysql:5.7
     command: >
-      --character-set-server=latin1
-      --collation-server=latin1_swedish_ci
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
       --socket=/var/run/mysqld/mysqld.sock
     environment:
       MYSQL_ROOT_PASSWORD: "123"      # mesma senha do conexaoBD.php original

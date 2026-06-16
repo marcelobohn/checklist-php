@@ -3,12 +3,10 @@ session_start();
 include_once ("conexaoBD.php");
 $bd = new conexaoBD();
 
-$sql = "select * from usuario ";
-$sql .= "  where nome = '".$_POST['usuario']."'";
-$result = mysql_query( $sql );
-$registros = mysql_num_rows( $result );
-if( $registros > 0 )	{
-	$r = mysql_fetch_assoc( $result );
+$sql = "select * from usuario where nome = ?";
+$stmt = $bd->query( $sql, array( $_POST['usuario'] ) );
+$r = $stmt->fetch();
+if( $r )	{
 	if ($r['senha'] == $_POST['senha']) {
 		$_SESSION['usuario'] = $r['nome'];
 		$_SESSION['modo'] = 'de';
@@ -19,7 +17,7 @@ if( $registros > 0 )	{
 		}
 		header( 'Location: index.php' );
 	} else {
-		echo "Verifique o Usu·rio e Senha";
+		echo "Verifique o Usu√°rio e Senha";
 		echo "<script type=\"text/javascript\">";
 		echo "function espera(){ ";
 		echo "window.location = \"index.php\" } ";

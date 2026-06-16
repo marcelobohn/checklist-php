@@ -5,7 +5,7 @@
 	<head>
 		<title>{Titulo}</title>
 		<meta http-equiv="content-language" content="pt-br" /> 
-		<meta http-equiv="Content-Type"  content="text/html; charset=iso-8859-1" /> 
+		<meta http-equiv="Content-Type"  content="text/html; charset=utf-8" /> 
 		{IntoHead}
 	</head>
 	<body>

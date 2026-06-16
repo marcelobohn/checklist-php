@@ -2,9 +2,9 @@
 include('../template/start.php');
 
 //instancia a classe
-$tp = &new templateParser('../template/modelo.php');
+$tp = new templateParser('../template/modelo.php');
 
-//define os parâmetros da classe
+//define os parÃ¢metros da classe
 $tags = array(
             'Titulo' => $Titulo,
             'cabecalho' => 'cabecalho.php',
@@ -13,7 +13,7 @@ $tags = array(
             'IntoHead' => $head
         );
  
-//faz a substituição
+//faz a substituiÃ§Ã£o
 $tp->parseTemplate($tags);
  
 // exibe a page

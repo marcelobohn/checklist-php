@@ -5,12 +5,12 @@ include_once ("../conexaoBD.php");
 class Modelo
 {
 
-	/* Conex„o com o banco de dados */
+	/* Conex√£o com o banco de dados */
 	var $bd;
 	
 	//construtor
-	function Modelo(){
-		$this->bd = new conexaoBD();		
+	function __construct(){
+		$this->bd = new conexaoBD();
 		$this->idModelo = 0;
 		$this->nome = "";		
 	}
@@ -22,7 +22,7 @@ class Modelo
 	var $nome;
 	var $tabela = "modelo";
 	
-	/* MÈtodos get e set das propriedade */
+	/* M√©todos get e set das propriedade */
 	function setIdModelo( $idModelo )
 	{
 		$this->idModelo = $idModelo;
@@ -42,33 +42,29 @@ class Modelo
 	}
 	
 	function setModelo($idModelo) {
-		$sql = "select * from ".$this->tabela;
-		$sql .= "  where idModelo = ".$idModelo."";	
-		$result = mysql_query( $sql );
-		$registros = mysql_num_rows( $result );
-		if( $registros > 0 )	{
-			while( $r = mysql_fetch_array( $result ) ){
-				$this->idModelo = $r['idModelo'];
-				$this->nome = utf8_decode($r['nome']);
-			}
+		$sql = "select * from ".$this->tabela." where idModelo = ?";
+		$r = $this->bd->query( $sql, array( $idModelo ) )->fetch();
+		if( $r )	{
+			$this->idModelo = $r['idModelo'];
+			$this->nome = $r['nome'];
 			$retorno = true;
 		}
 		else
 			$retorno = false;
-		return $retorno;		
+		return $retorno;
 	}
 }	
 
-if ($_REQUEST['acao']=='apaga') {
+if (($_REQUEST['acao'] ?? '')=='apaga') {
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new ModeloControl();
-	$control->apagar($id);	
-	echo "ExcluÌdo com sucesso";
+	$control->apagar($id);
+	echo "Exclu√≠do com sucesso";
 	unset($control);
 }
 
-if ($_REQUEST['acao']=='grava') {
+if (($_REQUEST['acao'] ?? '')=='grava') {
 	include_once ($Aplicativo.".control.php");
 	
 	$model = new Modelo();
