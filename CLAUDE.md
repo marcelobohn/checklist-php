@@ -18,7 +18,7 @@ docker compose up -d --build
 ```
 
 - App:   <http://localhost/checklist/>  ⚠️ o caminho `/checklist/` é obrigatório
-- Login: **admin / admin** (criado pelo seed em `docker/schema.sql`)
+- Login: **admin / admin** (seed básico — ver [Banco de dados](#banco-de-dados))
 - Banco: exposto no host em `localhost:3307` (root / `123`), opcional para debug
 
 > A URL base é fixa em `template/lateral.php`
@@ -31,7 +31,7 @@ Para parar / resetar:
 
 ```bash
 docker compose down          # para os containers
-docker compose down -v       # para e APAGA o banco (recria o schema no próximo up)
+docker compose down -v       # para e APAGA o banco (migrations + seed básico no próximo up)
 ```
 
 ### Conexão com o banco
@@ -146,7 +146,23 @@ Regras seguidas na migração:
 ## Banco de dados
 
 Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema foi
-**reconstruído a partir das queries** e está documentado em `docker/schema.sql`.
+**reconstruído a partir das queries**. O ciclo de vida do banco fica em `db/`:
+
+```
+db/
+  migrations/001_init_schema.sql   # DDL versionado (tracking em schema_migrations)
+  seeds/basic.sql                  # essencial: usuário admin (auto, no 1º up)
+  seeds/dev.sql                    # exemplos: perguntas/modelo (opt-in)
+  migrate.sh   seed.sh   backup.sh   restore.sh
+```
+
+- **1º `up`** (banco novo): `docker/initdb.sh` aplica as migrations e o seed básico.
+- **Migrations futuras**: adicione `db/migrations/NNN_*.sql` e rode `./db/migrate.sh`.
+- **Exemplos de dev**: `./db/seed.sh dev` (e `./db/seed.sh basic` para o essencial).
+- **Backup/restore**: `./db/backup.sh` (gera `backups/*.sql.gz`) e `./db/restore.sh <arquivo>`.
+
+> Os dados vivem no volume Docker `dbdata` (não versionado; apagado por
+> `docker compose down -v`). Só a **definição** (migrations/seeds) está no git.
 
 | Tabela           | Colunas-chave                                                            |
 |------------------|--------------------------------------------------------------------------|

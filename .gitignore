@@ -5,3 +5,7 @@
 /vendor/
 .phpunit.cache/
 .phpunit.result.cache
+
+# Dumps de banco (mantém apenas o diretório)
+backups/*.sql
+backups/*.sql.gz

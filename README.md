@@ -72,11 +72,21 @@ Detalhes em [`tests/README.md`](tests/README.md).
 | `consulta/`  | Filtra e exibe checklists já respondidos                      |
 | `template/`  | Layout, sessão e *template engine*                            |
 | `js/`        | Front-end (jQuery + scripts por módulo)                       |
-| `docker/`    | `Dockerfile` e `schema.sql` para o ambiente local             |
+| `db/`        | Migrations, seeds e scripts de backup/restore                 |
+| `docker/`    | `Dockerfile` e `initdb.sh` (inicialização do banco)           |
 
 ## Banco de dados
 
-O `.sql` original não existia no repositório; o schema foi reconstruído a partir
-das queries do código e está em [`docker/schema.sql`](docker/schema.sql), que o
-container do MySQL carrega automaticamente na primeira execução (com um usuário
-`admin` e dados de exemplo).
+O schema (reconstruído das queries do código) e o ciclo de vida do banco ficam
+em `db/`:
+
+```bash
+# no 1º "up" o banco já sobe com as migrations + seed básico (usuário admin)
+./db/seed.sh dev          # carrega dados de exemplo (perguntas/modelo)
+./db/migrate.sh           # aplica migrations pendentes (db/migrations/NNN_*.sql)
+./db/backup.sh            # gera backups/checklist-<data>.sql.gz
+./db/restore.sh <arquivo> # restaura de um backup
+```
+
+Os dados vivem no volume Docker `dbdata` (não versionado). Detalhes em
+[`CLAUDE.md`](CLAUDE.md#banco-de-dados).

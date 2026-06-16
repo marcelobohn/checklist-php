@@ -27,7 +27,8 @@ services:
       MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-123}"
       MYSQL_DATABASE: "${DB_NAME:-checklist}"
     volumes:
-      - ./docker/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - ./db:/db:ro                    # migrations + seeds (usados pelo initdb)
+      - ./docker/initdb.sh:/docker-entrypoint-initdb.d/10-initdb.sh:ro
       - dbdata:/var/lib/mysql
       - mysqlsock:/var/run/mysqld      # socket compartilhado com o web
     ports:
