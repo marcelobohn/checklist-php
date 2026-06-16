@@ -83,7 +83,7 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 | `<mod>/<mod>.model.php`| Classe-entidade + *dispatcher* de `?acao=grava` / `?acao=apaga`     |
 | `<mod>/<mod>.control.php`| CRUD/SQL (insert, update, delete, getLista paginada)              |
 | `<mod>/<mod>.view.php` | HTML do formulário/listagem                                         |
-| `js/<mod>.js`          | Front-end: chamadas AJAX (jQuery 1.7.1) para os arquivos acima      |
+| `js/<mod>.js`          | Front-end: chamadas AJAX (jQuery 3.7.1) para os arquivos acima      |
 
 ### Módulos
 

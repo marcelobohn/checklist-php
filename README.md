@@ -14,7 +14,7 @@ As perguntas podem ser de dois tipos:
 Características:
 
 - Acesso a dados em **PDO com prepared statements** (PHP 8)
-- Telas dinâmicas com JavaScript (jQuery 1.7.1) e chamadas AJAX
+- Telas dinâmicas com JavaScript (jQuery 3.7.1) e chamadas AJAX
 - *Template engine* próprio (substituição de `{tags}`)
 - Organização MVC manual, uma pasta por funcionalidade
 
