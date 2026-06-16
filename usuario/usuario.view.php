@@ -55,7 +55,7 @@ if ($acao=='form') {
 		<label for="lnome">Nome </label>
 			<input type="text" value="<?php if (isset($model)) {echo $model->getNome();} ?>" id="nome" style="width: 400px;"><br /> 
 		<label for="lsenha">Senha </label>
-			<input type="password" value="<?php if (isset($model)) {echo $model->getSenha();} ?>" id="senha" style="width: 400px;"><br /> 
+			<input type="password" value="" id="senha" style="width: 400px;" placeholder="<?php echo isset($model) ? 'Deixe em branco para manter a senha atual' : ''; ?>"><br />
 		<label for="ladmin">Administrador</label>
 			<input type="checkbox" <?php if (isset($model)) { if ($model->getAdmin()=="S") { echo "checked=\"checked\"";}} ?> id="admin"><br />
 	</fieldset>

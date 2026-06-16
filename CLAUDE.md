@@ -116,7 +116,7 @@ Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema
 
 | Tabela           | Colunas-chave                                                            |
 |------------------|--------------------------------------------------------------------------|
-| `usuario`        | idUsuario, nome, senha (texto puro), admin (S/N)                          |
+| `usuario`        | idUsuario, nome, senha (hash bcrypt), admin (S/N)                         |
 | `pergunta`       | idPergunta, descricao, marcar (S/N), resposta (S/N)                       |
 | `resposta`       | idResposta, idPergunta, descricao                                        |
 | `modelo`         | idModelo, nome                                                            |
@@ -135,9 +135,9 @@ Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema
 - **`mysql_*`** (removida no PHP 7) → PDO; roda em PHP 8 suportado.
 - **Construtores PHP 4 / `&new`** → `__construct()` / `new`.
 - **ISO-8859-1 + `utf8_encode/decode`** (deprecados) → UTF-8 ponta a ponta.
+- **Senhas em texto puro** → hash bcrypt (`password_hash` / `password_verify`); editar usuário sem informar senha mantém a atual.
 
 ⚠️ **Ainda pendente (próximos passos):**
-- **Senhas em texto puro** — `login.php` compara direto; falta hash (`password_hash`/`password_verify`).
 - **Credenciais fixas** no fonte (`conexaoBD.php`: root / `123`) — deveriam vir de variáveis de ambiente.
 - **`block.php`** depende de `HTTP_REFERER` (forjável/ausente) com `preg_match` frágil.
 - **Sem CSRF / escape de saída** consistente (`htmlspecialchars`) nas views.

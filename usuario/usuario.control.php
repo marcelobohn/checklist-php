@@ -63,14 +63,22 @@ class UsuarioControl {
 	}
 
 	function inserir($model){
+		$senhaHash = password_hash( $model->senha, PASSWORD_DEFAULT );
 		$sql = "insert into ".$this->tabela." (nome, senha, admin) values ( ?, ?, ? )";
-		$this->bd->query( $sql, array( $model->nome, $model->senha, $model->admin ) );
+		$this->bd->query( $sql, array( $model->nome, $senhaHash, $model->admin ) );
 		return true;
 	}
 
 	function atualizar($model){
-		$sql = "update ".$this->tabela." set nome = ?, senha = ?, admin = ? where idUsuario = ?";
-		$this->bd->query( $sql, array( $model->nome, $model->senha, $model->admin, $model->idUsuario ) );
+		// Só atualiza a senha quando uma nova é informada; vazia mantém a atual.
+		if ($model->senha !== null && $model->senha !== "") {
+			$senhaHash = password_hash( $model->senha, PASSWORD_DEFAULT );
+			$sql = "update ".$this->tabela." set nome = ?, senha = ?, admin = ? where idUsuario = ?";
+			$this->bd->query( $sql, array( $model->nome, $senhaHash, $model->admin, $model->idUsuario ) );
+		} else {
+			$sql = "update ".$this->tabela." set nome = ?, admin = ? where idUsuario = ?";
+			$this->bd->query( $sql, array( $model->nome, $model->admin, $model->idUsuario ) );
+		}
 		return true;
 	}
 

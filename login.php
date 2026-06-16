@@ -7,7 +7,7 @@ $sql = "select * from usuario where nome = ?";
 $stmt = $bd->query( $sql, array( $_POST['usuario'] ) );
 $r = $stmt->fetch();
 if( $r )	{
-	if ($r['senha'] == $_POST['senha']) {
+	if (password_verify($_POST['senha'], $r['senha'])) {
 		$_SESSION['usuario'] = $r['nome'];
 		$_SESSION['modo'] = 'de';
 		if ($r['admin'] == 'S') {

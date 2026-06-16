@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 CREATE TABLE IF NOT EXISTS usuario (
   idUsuario INT(11) NOT NULL AUTO_INCREMENT,
   nome      VARCHAR(100) NOT NULL,
-  senha     VARCHAR(100) NOT NULL,         -- texto puro no original (sem hash)
+  senha     VARCHAR(255) NOT NULL,         -- hash bcrypt (password_hash)
   admin     CHAR(1) NOT NULL DEFAULT 'N',  -- 'S' = administrador
   PRIMARY KEY (idUsuario)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -114,8 +114,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- =====================================================================
 -- Dados iniciais (seed) — necessário para conseguir logar.
 -- Usuário: admin / Senha: admin  (perfil administrador)
+-- A senha é gravada como hash bcrypt de 'admin' (password_hash/PASSWORD_DEFAULT).
 -- =====================================================================
-INSERT INTO usuario (nome, senha, admin) VALUES ('admin', 'admin', 'S');
+INSERT INTO usuario (nome, senha, admin) VALUES
+  ('admin', '$2y$12$Il/ogvC3t1IGLHTciptVguRGy2fcCn6kN3EhtAqN0fG2Qg0aiu0k.', 'S');
 
 -- Dados de exemplo opcionais para visualizar o fluxo -------------------
 INSERT INTO pergunta (descricao, marcar, resposta) VALUES
