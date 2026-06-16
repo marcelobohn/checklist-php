@@ -1,4 +1,5 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
+<?php require_once(__DIR__ . "/../csrf.php"); ?>
 <?php
 	include_once ("../conexaoBD.php");
 	$bd = new conexaoBD();

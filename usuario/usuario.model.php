@@ -80,6 +80,7 @@ class Usuario
 }
 
 if (($_REQUEST['acao'] ?? '')=='apaga') {
+	require_once(__DIR__ . "/../csrf.php");
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new UsuarioControl();
@@ -89,6 +90,7 @@ if (($_REQUEST['acao'] ?? '')=='apaga') {
 }
 
 if (($_REQUEST['acao'] ?? '')=='grava') {
+	require_once(__DIR__ . "/../csrf.php");
 	include_once ($Aplicativo.".control.php");
 
 	$model = new Usuario();

@@ -92,6 +92,9 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 - `login.php` / `logout.php` / `dlgLogin.php` — autenticação por sessão.
 - `block.php` — **guard de autenticação por sessão**: incluído no topo dos entry points
   (index de cada módulo + endpoints AJAX/ação); retorna **403** se não houver login (`$_SESSION['modo']!='de'`).
+- `csrf.php` — **validação de token CSRF**: incluída nos endpoints de escrita (grava/apaga/inclui/limpa);
+  compara `$_REQUEST['csrf']` com `$_SESSION['csrf']` (gerado em `start.php`) e retorna **403** se inválido.
+  O token é anexado automaticamente às requisições AJAX por um `$.ajaxPrefilter` (ver `template/start.php`).
 
 ### Acesso a dados (PDO)
 
@@ -155,6 +158,8 @@ Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema
 - **Credenciais fixas** no fonte → lidas de variáveis de ambiente (`DB_*`); ver [Conexão com o banco](#conexão-com-o-banco).
 - **`block.php`** (anti-hotlink por `HTTP_REFERER`, ilusório) → **guard de sessão** (403) aplicado a todos os entry points; endpoints anônimos passam a ser bloqueados.
 - **Escape de saída (XSS)** → todo dado vindo do banco/usuário é impresso via o helper `h()` (`htmlspecialchars` com `ENT_QUOTES`), definido em `conexaoBD.php`.
+- **CSRF** → token por sessão (`start.php`) anexado a todo AJAX via `$.ajaxPrefilter` e validado nos endpoints de escrita (`csrf.php`).
 
-⚠️ **Ainda pendente (próximos passos):**
-- **Proteção CSRF** nos endpoints de escrita (grava/apaga/inclui/limpa) — rastreado na issue #6.
+Não há mais itens de dívida técnica de segurança pendentes do levantamento inicial.
+Possíveis melhorias futuras: remover o endpoint perigoso `registro.limpa.php`
+(truncate de todas as tabelas) e adicionar testes automatizados.

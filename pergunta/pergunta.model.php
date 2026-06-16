@@ -80,6 +80,7 @@ class Pergunta
 }	
 
 if (($_REQUEST['acao'] ?? '')=='apaga') {
+	require_once(__DIR__ . "/../csrf.php");
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new PerguntaControl();
@@ -89,6 +90,7 @@ if (($_REQUEST['acao'] ?? '')=='apaga') {
 }
 
 if (($_REQUEST['acao'] ?? '')=='grava') {
+	require_once(__DIR__ . "/../csrf.php");
 	header("Content-Type: text/html; charset=UTF-8",true);
 	include_once ($Aplicativo.".control.php");
 	

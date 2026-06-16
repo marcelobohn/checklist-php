@@ -1,4 +1,5 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
+<?php require_once(__DIR__ . "/../csrf.php"); ?>
 <?php
 /*
 	if ($_POST) {

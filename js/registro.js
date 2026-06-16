@@ -87,7 +87,7 @@ function cancela() {
 
 //function gravar(lista){
 function gravar(){
-	document.forms['checklist'].action = 'registro.grava.php?idModelo='+$("#idModelo").val();
+	document.forms['checklist'].action = 'registro.grava.php?idModelo='+$("#idModelo").val()+'&csrf='+encodeURIComponent(CSRF_TOKEN);
 	document.forms['checklist'].submit();
 	
 	/*
