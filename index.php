@@ -1,7 +1,7 @@
 <?php
 include('template/start.php');
 
-if ($_SESSION['modo']=='de') {
+if (($_SESSION['modo'] ?? '')=='de') {
 	//instancia a classe
 	$tp = new templateParser('template/modelo.php');
 	//define os parâmetros da classe
