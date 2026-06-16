@@ -1,3 +1,4 @@
+<?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
 	include_once ("pergunta.control.php");
 	$control = new PerguntaControl();

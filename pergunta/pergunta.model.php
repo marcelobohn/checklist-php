@@ -1,3 +1,4 @@
+<?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
 include ("config.php");
 include_once ("../conexaoBD.php");

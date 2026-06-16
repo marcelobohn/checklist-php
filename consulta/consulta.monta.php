@@ -1,3 +1,4 @@
+<?php require_once(__DIR__ . "/../block.php"); ?>
 <html xml:lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 	<head>
 		<meta http-equiv="content-language" content="pt" />

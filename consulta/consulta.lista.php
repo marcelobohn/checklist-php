@@ -1,3 +1,4 @@
+<?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
 	echo "<label>Cliente: </label><input type=\"text\" id=\"cliente\"><br />";
 	echo "<label>Tarefa: </label><input type=\"text\" id=\"tarefa\"><br />";

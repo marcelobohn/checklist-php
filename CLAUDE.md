@@ -90,7 +90,8 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 - `template/lateral.php` — menu lateral (mostra itens conforme `$_SESSION['perfil']`).
 - `index.php` — raiz: mostra login ou home conforme `$_SESSION['modo']`.
 - `login.php` / `logout.php` / `dlgLogin.php` — autenticação por sessão.
-- `block.php` — *anti-hotlink* via `HTTP_REFERER` (frágil; incluído no `template/modelo.php`).
+- `block.php` — **guard de autenticação por sessão**: incluído no topo dos entry points
+  (index de cada módulo + endpoints AJAX/ação); retorna **403** se não houver login (`$_SESSION['modo']!='de'`).
 
 ### Acesso a dados (PDO)
 
@@ -152,7 +153,7 @@ Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema
 - **ISO-8859-1 + `utf8_encode/decode`** (deprecados) → UTF-8 ponta a ponta.
 - **Senhas em texto puro** → hash bcrypt (`password_hash` / `password_verify`); editar usuário sem informar senha mantém a atual.
 - **Credenciais fixas** no fonte → lidas de variáveis de ambiente (`DB_*`); ver [Conexão com o banco](#conexão-com-o-banco).
+- **`block.php`** (anti-hotlink por `HTTP_REFERER`, ilusório) → **guard de sessão** (403) aplicado a todos os entry points; endpoints anônimos passam a ser bloqueados.
 
 ⚠️ **Ainda pendente (próximos passos):**
-- **`block.php`** depende de `HTTP_REFERER` (forjável/ausente) com `preg_match` frágil.
 - **Sem CSRF / escape de saída** consistente (`htmlspecialchars`) nas views.

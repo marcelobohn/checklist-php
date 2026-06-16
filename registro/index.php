@@ -1,5 +1,6 @@
 <?php
 include('../template/start.php');
+require_once(__DIR__ . '/../block.php');
 
 //instancia a classe
 $tp = new templateParser('../template/modelo.php');
