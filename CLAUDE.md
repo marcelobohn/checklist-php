@@ -192,5 +192,24 @@ db/
 - **CSRF** → token por sessão (`start.php`) anexado a todo AJAX via `$.ajaxPrefilter` e validado nos endpoints de escrita (`csrf.php`).
 
 Não há mais itens de dívida técnica de segurança pendentes do levantamento inicial.
-Possíveis melhorias futuras: remover o endpoint perigoso `registro.limpa.php`
-(truncate de todas as tabelas) e adicionar testes automatizados.
+Possível melhoria futura: remover o endpoint perigoso `registro.limpa.php`
+(truncate de todas as tabelas).
+
+## Histórico de releases
+
+Modernização rastreada por issues e releases (uma tarefa por mudança). Detalhes
+de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
+
+| Versão | Entrega | Issue |
+|--------|---------|-------|
+| `v1.0.0` | Documentação inicial + ambiente Docker (PHP 5.6) | — |
+| `v1.1.0` | Migração `mysql_*` → **PDO** com prepared statements, **PHP 8**, **UTF-8** | #1 |
+| `v1.1.1` | **Hash de senhas** (bcrypt: `password_hash`/`password_verify`) | #2 |
+| `v1.1.2` | **Credenciais** do banco via variáveis de ambiente (`DB_*`) | #3 |
+| `v1.1.3` | **Controle de acesso** por sessão (substitui o anti-hotlink frágil) | #4 |
+| `v1.1.4` | **Escape de saída** anti-XSS (helper `h()`) | #5 |
+| `v1.1.5` | **Proteção CSRF** nos endpoints de escrita | #6 |
+| `v1.2.0` | **Suíte de testes** funcionais (PHPUnit) | #7 |
+| `v1.3.0` | **Migrations, seeds** (básico/dev) e **backup/restore** | #8 |
+| `v1.4.0` | **CI** (GitHub Actions: `composer test` a cada push) | #9 |
+| `v1.4.1` | Fix do `Warning` de acesso anônimo no `index.php` | #10 |
