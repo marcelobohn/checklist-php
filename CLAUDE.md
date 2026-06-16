@@ -36,10 +36,25 @@ docker compose down -v       # para e APAGA o banco (recria o schema no próximo
 
 ### Conexão com o banco
 
-`conexaoBD.php` conecta via **PDO** com DSN `host=localhost`. No PDO, `localhost`
-usa **socket Unix**; por isso o `docker-compose.yml` compartilha o diretório do
-socket do MySQL (`/var/run/mysqld`) entre os containers `db` e `web`, e o
-`docker/Dockerfile` aponta `pdo_mysql.default_socket` para esse caminho.
+`conexaoBD.php` lê as credenciais de **variáveis de ambiente** (`getenv`), com
+defaults para o ambiente Docker de desenvolvimento:
+
+| Variável      | Default     | Observação                          |
+|---------------|-------------|-------------------------------------|
+| `DB_HOST`     | `localhost` | `localhost` no PDO usa socket Unix  |
+| `DB_PORT`     | `3306`      |                                     |
+| `DB_NAME`     | `checklist` |                                     |
+| `DB_USER`     | `root`      |                                     |
+| `DB_PASSWORD` | `123`       | fonte única no compose (MySQL + web)|
+
+Para usar outras credenciais, exporte as variáveis (ou crie um `.env`) antes do
+`docker compose up` — ex.: `DB_PASSWORD=minhasenha docker compose up -d`. O
+`docker-compose.yml` injeta `${DB_PASSWORD:-123}` tanto no MySQL quanto no `web`,
+mantendo os dois em sincronia. Veja `.env.example`.
+
+Como `DB_HOST=localhost` usa **socket Unix**, o `docker-compose.yml` compartilha o
+diretório do socket (`/var/run/mysqld`) entre `db` e `web`, e o `docker/Dockerfile`
+aponta `pdo_mysql.default_socket` para esse caminho.
 
 ## Arquitetura
 
@@ -136,8 +151,8 @@ Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema
 - **Construtores PHP 4 / `&new`** → `__construct()` / `new`.
 - **ISO-8859-1 + `utf8_encode/decode`** (deprecados) → UTF-8 ponta a ponta.
 - **Senhas em texto puro** → hash bcrypt (`password_hash` / `password_verify`); editar usuário sem informar senha mantém a atual.
+- **Credenciais fixas** no fonte → lidas de variáveis de ambiente (`DB_*`); ver [Conexão com o banco](#conexão-com-o-banco).
 
 ⚠️ **Ainda pendente (próximos passos):**
-- **Credenciais fixas** no fonte (`conexaoBD.php`: root / `123`) — deveriam vir de variáveis de ambiente.
 - **`block.php`** depende de `HTTP_REFERER` (forjável/ausente) com `preg_match` frágil.
 - **Sem CSRF / escape de saída** consistente (`htmlspecialchars`) nas views.

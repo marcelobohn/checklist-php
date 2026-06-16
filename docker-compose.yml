@@ -1,11 +1,11 @@
 # =====================================================================
 # Ambiente para rodar o projeto legado "como está", sem mexer no fonte.
 #
-# conexaoBD.php usa mysql_connect('localhost:3306', 'root', '123'). Na API
-# mysql_*, o host 'localhost' significa conexão via SOCKET Unix (a porta é
-# ignorada) — exatamente como era no servidor LAMP único original. Por isso
-# compartilhamos o diretório do socket do MySQL com o container web através
-# do volume `mysqlsock`. Nenhuma linha do fonte original precisa mudar.
+# conexaoBD.php conecta via PDO lendo as variáveis DB_* (com defaults de
+# dev). Com DB_HOST=localhost, o PDO usa SOCKET Unix; por isso compartilhamos
+# o diretório do socket do MySQL com o container web pelo volume `mysqlsock`.
+# A senha tem fonte única (${DB_PASSWORD:-123}), usada tanto no MySQL quanto
+# no web — sobrescreva exportando DB_PASSWORD (ou via arquivo .env).
 #
 # O código espera ser servido em http://localhost/checklist/ (ver o
 # $EnderecoBase fixo em template/lateral.php e o block.php que valida o
@@ -24,8 +24,8 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --socket=/var/run/mysqld/mysqld.sock
     environment:
-      MYSQL_ROOT_PASSWORD: "123"      # mesma senha do conexaoBD.php original
-      MYSQL_DATABASE: "checklist"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-123}"
+      MYSQL_DATABASE: "${DB_NAME:-checklist}"
     volumes:
       - ./docker/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
       - dbdata:/var/lib/mysql
@@ -33,13 +33,19 @@ services:
     ports:
       - "3307:3306"    # MySQL exposto no host em 3307 (opcional, p/ debug)
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD:-123}"]
       interval: 5s
       timeout: 5s
       retries: 20
 
   web:
     build: ./docker
+    environment:
+      DB_HOST: "${DB_HOST:-localhost}"
+      DB_PORT: "${DB_PORT:-3306}"
+      DB_NAME: "${DB_NAME:-checklist}"
+      DB_USER: "${DB_USER:-root}"
+      DB_PASSWORD: "${DB_PASSWORD:-123}"
     volumes:
       - ./:/var/www/html/checklist     # servido em http://localhost/checklist/
       - mysqlsock:/var/run/mysqld      # enxerga o socket do MySQL via 'localhost'

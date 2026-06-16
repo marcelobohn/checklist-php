@@ -1,0 +1,2 @@
+# Variáveis de ambiente locais (podem conter segredos) — use .env.example como base
+.env
