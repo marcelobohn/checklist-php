@@ -9,7 +9,8 @@ class SmokeTest extends FunctionalTestCase
     {
         $r = $this->get('/', $this->newJar());
         $this->assertSame(200, $r['code']);
-        $this->assertStringNotContainsString('403', $r['body']);
+        $this->assertStringContainsString('frmLogin', $r['body'], 'A tela de login deveria renderizar.');
+        $this->assertStringNotContainsString('Acesso negado', $r['body'], 'Não deveria ser a página de 403.');
     }
 
     public function testLoginValidoRedireciona(): void
