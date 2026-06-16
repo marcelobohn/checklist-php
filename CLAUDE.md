@@ -154,6 +154,7 @@ Banco `checklist` (MySQL, **utf8mb4**). O `.sql` original não existia; o schema
 - **Senhas em texto puro** → hash bcrypt (`password_hash` / `password_verify`); editar usuário sem informar senha mantém a atual.
 - **Credenciais fixas** no fonte → lidas de variáveis de ambiente (`DB_*`); ver [Conexão com o banco](#conexão-com-o-banco).
 - **`block.php`** (anti-hotlink por `HTTP_REFERER`, ilusório) → **guard de sessão** (403) aplicado a todos os entry points; endpoints anônimos passam a ser bloqueados.
+- **Escape de saída (XSS)** → todo dado vindo do banco/usuário é impresso via o helper `h()` (`htmlspecialchars` com `ENT_QUOTES`), definido em `conexaoBD.php`.
 
 ⚠️ **Ainda pendente (próximos passos):**
-- **Sem CSRF / escape de saída** consistente (`htmlspecialchars`) nas views.
+- **Proteção CSRF** nos endpoints de escrita (grava/apaga/inclui/limpa) — rastreado na issue #6.

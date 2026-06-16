@@ -23,7 +23,7 @@
 	foreach( $rows as $r ){
 		$numero++;
 		echo "<div class=\"pergunta\" id=\"p_".$r['idPergunta']."\">\n";
-		echo "$numero) <i>".$r['descricao']."</i> [".$r['idPergunta']."]";
+		echo "$numero) <i>".h($r['descricao'])."</i> [".$r['idPergunta']."]";
 		if ($r['marcar']=='S') {
 			echo "<br /><input type=\"radio\" name=\"r_".$r['idPergunta']."\" value=\"1\" /> sim <br />\n";
 			echo "<input type=\"radio\"  name=\"r_".$r['idPergunta']."\" value=\"0\" /> não <br />";
@@ -32,7 +32,7 @@
 				echo "<br />\n";
 				$respostas = $bd->query( "select * from resposta where idPergunta = ?", array( $r['idPergunta'] ) )->fetchAll();
 				foreach( $respostas as $rp ){
-					echo " <input type=\"radio\" name=\"r_".$rp['idPergunta']."\" value=\"".$rp["idResposta"]."\"> ".$rp['descricao']."<br />\n";
+					echo " <input type=\"radio\" name=\"r_".$rp['idPergunta']."\" value=\"".$rp["idResposta"]."\"> ".h($rp['descricao'])."<br />\n";
 				}
 			}
 		}

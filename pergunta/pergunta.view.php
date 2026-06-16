@@ -50,7 +50,7 @@ if ($acao=='form') {
 <hr />
   <!--<legend>Login:</legend>-->
 <label for="codigo">Código </label><input type="hidden" value="<?php if (isset($model)) {echo $model->getIdPergunta();} ?>" id="idPergunta" style="width:100px;"><?php if (isset($model)) {echo $model->getIdPergunta();} ?><br />
-<label for="nome">Descricao </label><input type="text" value="<?php if (isset($model)) {echo $model->getDescricao();} ?>" id="descricao" style="width:400px;"><br />
+<label for="nome">Descricao </label><input type="text" value="<?php if (isset($model)) {echo h($model->getDescricao());} ?>" id="descricao" style="width:400px;"><br />
 <label for="cidade">Marcar </label><input type="checkbox" <?php if (isset($model)) { if ($model->getMarcar()=="S") { echo "checked=\"checked\"";}} ?> id="marcar"><br />
 <label for="site">Resposta </label><input type="checkbox" <?php if (isset($model)) { if ($model->getResposta()=="S") { echo "checked=\"checked\"";}} ?> id="resposta" onclick="listaResposta(resposta.checked)"><br />
 

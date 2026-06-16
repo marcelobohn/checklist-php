@@ -16,19 +16,19 @@
 	$r = $bd->query( $sql, array( $_REQUEST['registro'] ) )->fetch();
 
 	echo "<div class=\"pergunta\" >\n";	
-	echo "Usuario: ".$r['usuario'];
-	echo "</div>\n";		
-	echo "<div class=\"pergunta\" >\n";	
-	echo "Versão: ".$r['versao'];
-	echo "</div>\n";			
-	echo "<div class=\"pergunta\" >\n";	
-	echo "Cliente: ".$r['base'];
-	echo "</div>\n";		
-	echo "<div class=\"pergunta\" >\n";	
-	echo "Tarefa: ".$r['tarefa'];
+	echo "Usuario: ".h($r['usuario']);
 	echo "</div>\n";
-	echo "<div class=\"pergunta\" >\n";	
-	echo "Código Cliente: ".$r['codCliente'];
+	echo "<div class=\"pergunta\" >\n";
+	echo "Versão: ".h($r['versao']);
+	echo "</div>\n";
+	echo "<div class=\"pergunta\" >\n";
+	echo "Cliente: ".h($r['base']);
+	echo "</div>\n";
+	echo "<div class=\"pergunta\" >\n";
+	echo "Tarefa: ".h($r['tarefa']);
+	echo "</div>\n";
+	echo "<div class=\"pergunta\" >\n";
+	echo "Código Cliente: ".h($r['codCliente']);
 	echo "</div>\n";
 	
 	$sql = "select p.*, r.descricao resp, r.idresposta from registroitem ri join pergunta p on ri.idpergunta = p.idpergunta left join resposta r on ri.idresposta = r.idresposta where ri.idregistro = ?";
@@ -38,13 +38,13 @@
 	foreach( $rows as $r ){
 			$numero++;
 			echo "<div class=\"pergunta\" id=\"p_".$r['idPergunta']."\">\n";
-			echo "$numero) <i>".$r['descricao']."</i>";
+			echo "$numero) <i>".h($r['descricao'])."</i>";
 			if ($r['marcar']=='S') {
 				echo "<br />";
 				echo ($r['idresposta']=='1') ? ('SIM') : ('NÃO');
 			} else {
 				if ($r['resposta']=='S') {
-					echo "<br>".$r['resp'];
+					echo "<br>".h($r['resp']);
 				}
 			}
 			echo "</div>\n";

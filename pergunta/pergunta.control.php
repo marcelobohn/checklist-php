@@ -20,7 +20,7 @@ class PerguntaControl {
 		$rows = $this->bd->query( $sql, array( $id ) )->fetchAll();
 
 		foreach( $rows as $r ){
-			$resposta .= "<li>".$r['descricao']."&nbsp;&nbsp;<a href=\"javascript:apagaResposta(".$id.",".$r['idResposta'].");listaResposta(true)\"><b>X</b></a> </li>";
+			$resposta .= "<li>".h($r['descricao'])."&nbsp;&nbsp;<a href=\"javascript:apagaResposta(".$id.",".$r['idResposta'].");listaResposta(true)\"><b>X</b></a> </li>";
 		}
 		echo "</ul>";
 		return $resposta;
@@ -63,9 +63,9 @@ class PerguntaControl {
 				"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
 				"<td>".$r[0]."</td>";
 				if (($_SESSION['perfil'] ?? '')=='adm') { $resposta .=
-					"<td><a href=\"javascript:altera(".$r[0].");\">".$r['descricao']."</a></td>"; }
+					"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['descricao'])."</a></td>"; }
 				else { $resposta .=
-					"<td>".$r['descricao']."</td>"; }
+					"<td>".h($r['descricao'])."</td>"; }
 				$resposta .=
 				"<td>".$r['marcar']."</td>" .
 				"<td>".$r['resposta']."</td>" .

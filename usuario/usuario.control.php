@@ -46,9 +46,9 @@ class UsuarioControl {
 				"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
 				"<td>".$r[0]."</td>";
 				if (($_SESSION['modo'] ?? '')=='de') { $resposta .=
-					"<td><a href=\"javascript:altera(".$r[0].");\">".$r['nome']."</a></td>"; }
+					"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['nome'])."</a></td>"; }
 				else { $resposta .=
-					"<td>".$r['nome']."</td>"; }
+					"<td>".h($r['nome'])."</td>"; }
 				$resposta .=
 					"<td>".$r['admin']."</td>";
 				$resposta .=

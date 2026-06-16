@@ -19,7 +19,7 @@ class ModeloControl {
 	if( count($rows) > 0 )	{
 		$resposta .= "Perguntas diponíveis: <br /><select id=\"idPergunta\">";
 		foreach( $rows as $r ){
-			$resposta .= "<option value=".$r['idPergunta']." >".$r['descricao']."</option>";
+			$resposta .= "<option value=".$r['idPergunta']." >".h($r['descricao'])."</option>";
 		}
 		$resposta .= "</select>";
 		$resposta .=  "<a href=\"javascript:incluiPergunta(idModelo.value, idPergunta.value);listaPergunta()\">Inclui pergunta</a><br />";
@@ -48,7 +48,7 @@ class ModeloControl {
 				$resposta .= "<img width=\"10\">";
 			$resposta .= "&nbsp;&nbsp;";
 */
-			$resposta .= "".$r['descricao']."</li>";
+			$resposta .= "".h($r['descricao'])."</li>";
 		}
 	}
 	echo "</ul>";
@@ -89,9 +89,9 @@ class ModeloControl {
 				"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
 				"<td>".$r[0]."</td>";
 				if (($_SESSION['perfil'] ?? '')=='adm') { $resposta .=
-					"<td><a href=\"javascript:altera(".$r[0].");\">".$r['nome']."</a></td>"; }
+					"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['nome'])."</a></td>"; }
 				else { $resposta .=
-					"<td>".$r['nome']."</td>"; }
+					"<td>".h($r['nome'])."</td>"; }
 				$resposta .=
 				"<td>".($r['marcar'] ?? '')."</td>" .
 				"<td>".($r['resposta'] ?? '')."</td>" .

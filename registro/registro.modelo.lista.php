@@ -7,7 +7,7 @@
 	$rows = $bd->query( $sql )->fetchAll();
 	echo "Modelos dipon&iacute;veis: <br /><select id=\"idModelo\" style=\"width:400px;\">";
 	foreach( $rows as $r ){
-		echo "<option value=".$r['idModelo']." >".$r['nome']."</option>";
+		echo "<option value=".$r['idModelo']." >".h($r['nome'])."</option>";
 	}
 	echo "</select>";
 	echo  "<a href=\"javascript:gera()\"> Montar check list</a><br />";

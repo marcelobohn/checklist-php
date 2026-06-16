@@ -16,7 +16,7 @@
 	$rows = $bd->query( $sql, $params )->fetchAll();
 	echo "Registros filtrados:  <br /><select id=\"idRegistro\">";
 	foreach( $rows as $r ){
-		echo "<option value=".$r['idRegistro']." >".$r['data']."</option>";
+		echo "<option value=".$r['idRegistro']." >".h($r['data'])."</option>";
 	}
 	echo "</select>";
 	echo "<a href=\"javascript:mostra()\"> Mostrar check list</a><br />";	
