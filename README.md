@@ -1,5 +1,7 @@
 # Checklist PHP
 
+[![CI](https://github.com/marcelobohn/checklist-php/actions/workflows/ci.yml/badge.svg)](https://github.com/marcelobohn/checklist-php/actions/workflows/ci.yml)
+
 Sistema web de **checklists** escrito em PHP puro (~2012). Permite cadastrar
 perguntas, montar modelos de checklist a partir dessas perguntas, responder os
 checklists e consultar os registros respondidos.

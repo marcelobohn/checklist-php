@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  test:
+    name: Testes funcionais (PHPUnit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP + Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - name: Instalar dependências
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Subir o ambiente (Docker)
+        run: docker compose up -d --build
+
+      - name: Aguardar app + banco prontos
+        run: |
+          ok=""
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" \
+              --data "usuario=admin&senha=admin" \
+              http://localhost/checklist/login.php || true)
+            if [ "$code" = "302" ]; then ok="1"; echo "Ambiente pronto."; break; fi
+            sleep 2
+          done
+          if [ -z "$ok" ]; then echo "Ambiente não ficou pronto a tempo."; exit 1; fi
+
+      - name: Rodar a suíte
+        run: composer test
+
+      - name: Logs dos containers (em caso de falha)
+        if: failure()
+        run: docker compose logs --no-color
