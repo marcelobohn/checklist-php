@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         failOnWarning="true"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="funcional">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <!-- URL base do app dockerizado; sobrescreva com a env BASE_URL -->
+        <env name="BASE_URL" value="http://localhost/checklist" force="false"/>
+        <!-- senha do MySQL para asserções/limpeza via docker (default de dev) -->
+        <env name="DB_PASSWORD" value="123" force="false"/>
+    </php>
+</phpunit>

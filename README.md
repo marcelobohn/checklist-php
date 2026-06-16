@@ -47,11 +47,25 @@ docker compose down -v    # para e APAGA o banco (recria o schema no próximo up
 > `block.php`). Acessar por outra porta ou pela raiz quebra a navegação.
 > Detalhes em [`CLAUDE.md`](CLAUDE.md).
 
+## Testes
+
+Suíte funcional (PHPUnit) que exercita o app dockerizado via HTTP, cobrindo
+login/sessão, controle de acesso, SQL injection, hash de senha, XSS e CSRF:
+
+```bash
+docker compose up -d --build   # app no ar (com seed)
+composer install               # uma vez
+composer test                  # roda a suíte
+```
+
+Detalhes em [`tests/README.md`](tests/README.md).
+
 ## Estrutura
 
 | Pasta        | Função                                                        |
 |--------------|---------------------------------------------------------------|
 | `usuario/`   | Cadastro de usuários (perfil administrador)                    |
+| `tests/`     | Suíte de testes funcionais (PHPUnit)                           |
 | `pergunta/`  | Cadastro de perguntas e suas respostas                        |
 | `modelo/`    | Monta modelos de checklist associando perguntas               |
 | `registro/`  | Responde um checklist a partir de um modelo                   |

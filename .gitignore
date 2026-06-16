@@ -1,2 +1,7 @@
 # Variáveis de ambiente locais (podem conter segredos) — use .env.example como base
 .env
+
+# Dependências e cache de testes (Composer / PHPUnit)
+/vendor/
+.phpunit.cache/
+.phpunit.result.cache

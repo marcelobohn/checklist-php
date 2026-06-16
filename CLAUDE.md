@@ -56,6 +56,21 @@ Como `DB_HOST=localhost` usa **socket Unix**, o `docker-compose.yml` compartilha
 diretório do socket (`/var/run/mysqld`) entre `db` e `web`, e o `docker/Dockerfile`
 aponta `pdo_mysql.default_socket` para esse caminho.
 
+## Testes
+
+Suíte funcional em PHPUnit (`tests/`) que bate no app dockerizado via HTTP,
+cobrindo login/sessão, controle de acesso (403), SQL injection, hash de senha,
+XSS e CSRF. Os dados criados nos testes levam o marcador `~TEST~` e são limpos
+no `tearDown` (suíte idempotente, seed preservado).
+
+```bash
+docker compose up -d --build   # app no ar
+composer install               # dependências de teste (uma vez)
+composer test                  # ./vendor/bin/phpunit
+```
+
+Detalhes em [`tests/README.md`](tests/README.md).
+
 ## Arquitetura
 
 PHP procedural/MVC manual, **uma pasta por funcionalidade**. Cada módulo repete o
