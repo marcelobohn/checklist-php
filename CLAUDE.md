@@ -14,8 +14,13 @@ registros respondidos.
 Ambiente: **PHP 8.3 + Apache + MySQL 5.7** (utf8mb4).
 
 ```bash
+composer install           # gera vendor/ — o app usa o autoloader (PSR-4) em runtime
 docker compose up -d --build
 ```
+
+> ℹ️ Desde a adoção do **autoload PSR-4** (classes em `src/App`), o app depende de
+> `vendor/autoload.php`. Como o container monta o repositório (`./`), rode
+> `composer install` **antes** do `docker compose up` (ou após um clone novo).
 
 - App:   <http://localhost/checklist/>  ⚠️ o caminho `/checklist/` é obrigatório
 - Login: **admin / admin** (seed básico — ver [Banco de dados](#banco-de-dados))
@@ -36,7 +41,7 @@ docker compose down -v       # para e APAGA o banco (migrations + seed básico n
 
 ### Conexão com o banco
 
-`conexaoBD.php` lê as credenciais de **variáveis de ambiente** (`getenv`), com
+`src/ConexaoBD.php` lê as credenciais de **variáveis de ambiente** (`getenv`), com
 defaults para o ambiente Docker de desenvolvimento:
 
 | Variável      | Default     | Observação                          |
@@ -80,10 +85,14 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 |------------------------|---------------------------------------------------------------------|
 | `<mod>/config.php`     | Define `$Titulo`, `$ArquivoJS`, `$Aplicativo` (roteamento)          |
 | `<mod>/index.php`      | Página do módulo, montada pelo template engine                      |
-| `<mod>/<mod>.model.php`| Classe-entidade + *dispatcher* de `?acao=grava` / `?acao=apaga`     |
-| `<mod>/<mod>.control.php`| CRUD/SQL (insert, update, delete, getLista paginada)              |
+| `<mod>/<mod>.model.php`| *dispatcher* de `?acao=grava` / `?acao=apaga` (usa as classes de `src/App`) |
 | `<mod>/<mod>.view.php` | HTML do formulário/listagem                                         |
 | `js/<mod>.js`          | Front-end: chamadas AJAX (jQuery 3.7.1) para os arquivos acima      |
+
+> As **classes** (entidade + control) vivem em `src/App` e são carregadas por
+> **autoload PSR-4** (Composer) — ver [Classes e autoload](#classes-e-autoload-psr-4).
+> A entidade `App\<Mod>` e o `App\<Mod>Control` (CRUD/SQL: insert, update, delete,
+> `getLista` paginada) substituem os antigos `<mod>.model.php`/`<mod>.control.php`.
 
 ### Módulos
 
@@ -95,12 +104,27 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 | `registro/`  | Responde um checklist a partir de um modelo e grava em `registro(item)`   |
 | `consulta/`  | Filtra e exibe checklists já respondidos                                   |
 
+### Classes e autoload (PSR-4)
+
+As classes ficam em `src/`, namespace `App\`, carregadas por **autoload do Composer**
+(`composer.json` → `autoload.psr-4: {"App\\":"src/"}`); a função global `h()` vem de
+`src/helpers.php` (autoload `files`). Não há mais `include_once` manual de classe.
+
+| Classe | Arquivo |
+|--------|---------|
+| `App\ConexaoBD` | `src/ConexaoBD.php` — PDO. Ver [Acesso a dados](#acesso-a-dados-pdo) |
+| `App\TemplateParser` | `src/TemplateParser.php` — *template engine* (`{Tag}` via `ob_start`/`include`) |
+| `App\Pergunta` / `App\PerguntaControl` | `src/Pergunta.php` / `src/PerguntaControl.php` |
+| `App\Modelo` / `App\ModeloControl` | `src/Modelo.php` / `src/ModeloControl.php` |
+| `App\Usuario` / `App\UsuarioControl` | `src/Usuario.php` / `src/UsuarioControl.php` |
+
+O autoloader é carregado nos bootstraps: `block.php` (endpoints autenticados),
+`template/start.php` (páginas de índice) e `login.php`. Dentro do `namespace App`,
+classes globais usam `\` (ex.: `\PDO`, `\PDOException`).
+
 ### Infraestrutura comum (raiz)
 
-- `conexaoBD.php` — classe `conexaoBD` (PDO). Ver [Acesso a dados](#acesso-a-dados-pdo).
-- `template/class.template.php` — *template engine* minimalista: substitui `{Tag}`
-  por texto ou pelo conteúdo de um arquivo (via `ob_start`/`include`).
-- `template/start.php` — `session_start()`, inclui `config.php` e monta `$head` (CSS/JS).
+- `template/start.php` — carrega o autoloader, `session_start()`, inclui `config.php` e monta `$head` (CSS/JS).
 - `template/modelo.php` / `template/acesso.php` — layout logado / tela de login.
 - `template/lateral.php` — menu lateral (mostra itens conforme `$_SESSION['perfil']`).
 - `index.php` — raiz: mostra login ou home conforme `$_SESSION['modo']`.
@@ -113,10 +137,10 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 
 ### Acesso a dados (PDO)
 
-Toda query passa pela classe `conexaoBD`. O método central é:
+Toda query passa pela classe `App\ConexaoBD`. O método central é:
 
 ```php
-$bd = new conexaoBD();
+$bd = new \App\ConexaoBD();   // ou: use App\ConexaoBD; $bd = new ConexaoBD();
 // SELECT com parâmetros (prepared statement):
 $stmt = $bd->query("select * from usuario where nome = ?", array($nome));
 $r    = $stmt->fetch();          // uma linha
@@ -196,7 +220,7 @@ db/
 - **Senhas em texto puro** → hash bcrypt (`password_hash` / `password_verify`); editar usuário sem informar senha mantém a atual.
 - **Credenciais fixas** no fonte → lidas de variáveis de ambiente (`DB_*`); ver [Conexão com o banco](#conexão-com-o-banco).
 - **`block.php`** (anti-hotlink por `HTTP_REFERER`, ilusório) → **guard de sessão** (403) aplicado a todos os entry points; endpoints anônimos passam a ser bloqueados.
-- **Escape de saída (XSS)** → todo dado vindo do banco/usuário é impresso via o helper `h()` (`htmlspecialchars` com `ENT_QUOTES`), definido em `conexaoBD.php`.
+- **Escape de saída (XSS)** → todo dado vindo do banco/usuário é impresso via o helper `h()` (`htmlspecialchars` com `ENT_QUOTES`), definido em `src/helpers.php`.
 - **CSRF** → token por sessão (`start.php`) anexado a todo AJAX via `$.ajaxPrefilter` e validado nos endpoints de escrita (`csrf.php`).
 
 Não há mais itens de dívida técnica de segurança pendentes do levantamento inicial.
@@ -228,3 +252,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.6.1` | Fix: incluir/remover pergunta no modelo (XHR cru ia sem CSRF → 403) | #17 |
 | `v1.6.2` | **Cache-busting** de assets (`?v=filemtime`) — correções de JS/CSS chegam ao usuário | #18 |
 | `v1.6.3` | Fix: lista de pergunta/resposta não atualizava (refresh rodava antes do AJAX — race) | #19 |
+| `v1.7.0` | **Autoload PSR-4**: classes em `src/App`, fim dos `include_once` manuais | #20 |

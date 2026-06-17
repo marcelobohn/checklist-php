@@ -14,8 +14,7 @@
 	$rand = rand(100000,999999);
 	$resultado = false;
 	
-	include_once ("../conexaoBD.php");
-	$bd = new conexaoBD();
+	$bd = new \App\ConexaoBD();
 
 	$sql = "insert into registro ".
 	"(idModelo, rand, data, usuario, versao, base, tarefa, codCliente) ".

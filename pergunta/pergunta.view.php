@@ -1,14 +1,15 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
+use App\Pergunta;
+use App\PerguntaControl;
+
 include ("config.php");
 
 isset($_REQUEST['acao']) ? $acao = $_REQUEST['acao'] : $acao = null;
 isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = null;
 
 if ($acao=='pesquisa') {
-	include_once ($Aplicativo.".control.php");
-	//require_once ($Aplicativo.'.control.php');
-	$control = new PerguntaControl(); 
+	$control = new PerguntaControl();
 	isset($_REQUEST['p']) ? $p = $_REQUEST['p'] : $p = null;
 	isset($_REQUEST['pag']) ? $pagina = $_REQUEST['pag'] : $pagina = null;
 	if ($pagina == 'undefined') {
@@ -34,14 +35,10 @@ if ($acao=='form') {
 	//header("Content-Type: text/html; charset=UTF-8",true);
 	//header('Content-Type: text/html; charset=utf-8');
 	if ($id != null) {
-		$arq = $Aplicativo.".model.php";
-		include_once ("pergunta.model.php");
-		//require_once 'pergunta.model.php';
 		$model = new Pergunta();
 		$model->setPergunta($id);
-		
-		include_once ($Aplicativo.".control.php");
-		$control = new PerguntaControl();				
+
+		$control = new PerguntaControl();
 	}
 ?>
 <html lang="pt-br"><head><meta http-equiv="Content-Type"  content="text/html; charset=utf-8" /> </head><body>

@@ -1,7 +1,7 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 session_start();
-include_once ("conexaoBD.php");
-$bd = new conexaoBD();
+$bd = new \App\ConexaoBD();
 
 $sql = "select * from usuario where nome = ?";
 $stmt = $bd->query( $sql, array( $_POST['usuario'] ) );

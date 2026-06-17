@@ -3,7 +3,7 @@ include('template/start.php');
 
 if (($_SESSION['modo'] ?? '')=='de') {
 	//instancia a classe
-	$tp = new templateParser('template/modelo.php');
+	$tp = new \App\TemplateParser('template/modelo.php');
 	//define os parâmetros da classe
 	$tags = array(
             'Titulo' => $Titulo,
@@ -19,7 +19,7 @@ if (($_SESSION['modo'] ?? '')=='de') {
 	echo $tp->display();
 } else {
 	//instancia a classe
-	$tp = new templateParser('template/acesso.php');
+	$tp = new \App\TemplateParser('template/acesso.php');
 	//define os parâmetros da classe
 	$tags = array(
             'Titulo' => $Titulo,

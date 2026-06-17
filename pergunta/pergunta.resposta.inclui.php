@@ -1,9 +1,8 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php require_once(__DIR__ . "/../csrf.php"); ?>
 <?php
-	include_once ("../conexaoBD.php");
 
-	$bd = new conexaoBD();
+	$bd = new \App\ConexaoBD();
 	$sql = "insert into resposta (idPergunta, descricao) values ( ?, ? )";
 	try {
 		$bd->query( $sql, array( $_REQUEST["idPergunta"], $_REQUEST["descricao"] ) );

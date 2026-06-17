@@ -1,7 +1,6 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
-	include_once ("../conexaoBD.php");
-	$bd = new conexaoBD();	
+	$bd = new \App\ConexaoBD();	
 	$sql = "select * from registro r where 1=1 ";
 	$params = array();
 	if (($_REQUEST['cliente'] ?? "") != "") {

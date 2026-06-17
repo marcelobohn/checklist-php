@@ -8,8 +8,7 @@
 <?php
 	//header("Content-Type: text/html; charset=UTF-8",true);
 	//echo $_REQUEST['registro']."<br />";
-	include_once ("../conexaoBD.php");
-	$bd = new conexaoBD();	
+	$bd = new \App\ConexaoBD();	
 	echo "<form name=\"checklist\" method=\"POST\">\n";
 
 	$sql = "select * from registro r where r.idregistro = ?";

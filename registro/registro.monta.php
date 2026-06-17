@@ -7,8 +7,7 @@
 <body>
 <?php
 	//header("Content-Type: text/html; charset=UTF-8",true);
-	include_once ("../conexaoBD.php");
-	$bd = new conexaoBD();	
+	$bd = new \App\ConexaoBD();	
 	$sql = "select * from pergunta p join modelopergunta mp on p.idpergunta = mp.idpergunta where mp.idmodelo = ? order by mp.ordem";
 	$rows = $bd->query( $sql, array( $_REQUEST['modelo'] ) )->fetchAll();
 	echo "<form name=\"checklist\" method=\"POST\">\n";

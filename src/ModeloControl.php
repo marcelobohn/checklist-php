@@ -1,15 +1,16 @@
 <?php
-include_once ("../conexaoBD.php");
+
+namespace App;
 
 class ModeloControl {
 
 	/* Conexão com o banco de dados */
 	var $bd;
 	var $tabela = "modelo";
-	
+
 	//construtor
 	function __construct(){
-		$this->bd = new conexaoBD();
+		$this->bd = new ConexaoBD();
 	}
 
 	function getListaPergunta($id) {
@@ -37,12 +38,12 @@ class ModeloControl {
 			$resposta .= "<li>";
 			$resposta .= "<a href=\"javascript:apagaPergunta(".$id.",".$r['idPergunta'].")\"><b>X</b></a>&nbsp;&nbsp;";
 /*
-			if ($recNo!=1) 
+			if ($recNo!=1)
 				$resposta .= "<img src=\"../img/arrow_up.png\" onclick=\"alert('clicou')\" style=\"cursor:pointer;\" >";
 			else
 				$resposta .= "<img width=\"10\">";
 			$resposta .= "&nbsp;";
-			if ($recNo!=$registros) 
+			if ($recNo!=$registros)
 				$resposta .= "<img src=\"../img/arrow_down.png\" onclick=\"alert('clicou')\" style=\"cursor:pointer;\" >";
 			else
 				$resposta .= "<img width=\"10\">";
@@ -70,12 +71,12 @@ class ModeloControl {
 
 		$totalPaginas = ceil($totalReg/$itensPagina);
 		for ($i = 1; $i <= $totalPaginas; $i++) {
-			if ($pag != $i) { $resposta .= "<a href=\"javascript:lista(".$i.")\">".$i."</a>"; } 
+			if ($pag != $i) { $resposta .= "<a href=\"javascript:lista(".$i.")\">".$i."</a>"; }
 			else { $resposta .= $i; }
 			if ($i != $totalPaginas) { $resposta .= " - "; }
 		}
-		$resposta .= " | Registros: ".$totalReg;		
-		
+		$resposta .= " | Registros: ".$totalReg;
+
 		$rows = $this->bd->query( $sql, $params )->fetchAll();
 		if( count($rows) > 0 )	{
 			$resposta .= "<table border='0'><tr>".
@@ -124,9 +125,9 @@ class ModeloControl {
 		try {
 			$this->bd->query( $sql, array( $id ) );
 			return true;
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			return false;
 		}
 	}
-	
+
 }

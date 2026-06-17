@@ -1,5 +1,7 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
+use App\Usuario;
+use App\UsuarioControl;
 
 include ("config.php");
 
@@ -7,7 +9,6 @@ isset($_REQUEST['acao']) ? $acao = $_REQUEST['acao'] : $acao = null;
 isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = null;
 
 if ($acao=='pesquisa') {
-	include_once ($Aplicativo.".control.php");
 	$control = new UsuarioControl();
 	isset($_REQUEST['p']) ? $p = $_REQUEST['p'] : $p = null;
 	isset($_REQUEST['pag']) ? $pagina = $_REQUEST['pag'] : $pagina = null;
@@ -32,11 +33,9 @@ unset($control);
 <?php
 if ($acao=='form') {
 	if ($id != null) {
-		include_once ($Aplicativo.".model.php");
 		$model = new Usuario();
 		$model->setUsuario($id);
 
-		include_once ($Aplicativo.".control.php");
 		$control = new UsuarioControl();
 	}
 	?>

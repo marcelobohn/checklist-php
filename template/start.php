@@ -1,4 +1,7 @@
 <?php
+// Bootstrap do autoloader (classes em src/App via PSR-4) para as páginas de
+// índice dos módulos, inclusive antes do login (tela de acesso).
+require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 //header("Content-Type: text/html; charset=UTF-8",true)
 
@@ -9,9 +12,7 @@ if (empty($_SESSION['csrf'])) {
 
 include("config.php");
 
-//inclui a classe
-require_once($Acesso.'template/class.template.php');
-//include_once("template.php");
+// As classes (App\TemplateParser etc.) vêm do autoloader do Composer.
 
 // Cache-busting: anexa ?v=<filemtime> ao asset para que o browser busque a
 // versão nova sempre que o arquivo mudar (ver issue #18). O caminho de

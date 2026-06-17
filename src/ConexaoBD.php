@@ -1,15 +1,10 @@
 <?php
-// Helper de escape de saída (prevenção de XSS). Use ao imprimir qualquer
-// valor vindo do banco ou do usuário dentro de HTML/atributos.
-if (!function_exists('h')) {
-	function h($v) {
-		return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
-	}
-}
 
-class conexaoBD
+namespace App;
+
+class ConexaoBD
 {
-	/** @var PDO */
+	/** @var \PDO */
 	public $con;
 	public $status_online = false;
 
@@ -28,17 +23,17 @@ class conexaoBD
 
 		$dsn = "mysql:host=$host;port=$port;dbname=$name;charset=utf8mb4";
 		try {
-			$this->con = new PDO(
+			$this->con = new \PDO(
 				$dsn,
 				$user,
 				$pass,
 				array(
-					PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-					PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_BOTH, // acesso por indice E por nome
-					PDO::ATTR_EMULATE_PREPARES   => false,
+					\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+					\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_BOTH, // acesso por indice E por nome
+					\PDO::ATTR_EMULATE_PREPARES   => false,
 				)
 			);
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			echo("Erro ao conectar no Bando de Dados.");
 			exit;
 		}
@@ -77,4 +72,3 @@ class conexaoBD
 		$this->con->exec("truncate table " . $tabela);
 	}
 }
-?>

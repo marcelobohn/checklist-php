@@ -1,8 +1,7 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php require_once(__DIR__ . "/../csrf.php"); ?>
 <?php
-	include_once ("../conexaoBD.php");
-	$bd = new conexaoBD();
+	$bd = new \App\ConexaoBD();
 	$sql = "delete from modelopergunta where idModelo = ? and idPergunta = ?";
 	try {
 		$bd->query( $sql, array( $_REQUEST["idModelo"], $_REQUEST["idPergunta"] ) );

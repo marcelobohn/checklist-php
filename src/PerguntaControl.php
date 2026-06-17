@@ -1,14 +1,15 @@
 <?php
-include_once ("../conexaoBD.php");
+
+namespace App;
 
 class PerguntaControl {
 
 	/* Conexão com o banco de dados */
 	var $bd;
-	
+
 	//construtor
 	function __construct(){
-		$this->bd = new conexaoBD();
+		$this->bd = new ConexaoBD();
 	}
 
 	function getListaResposta($id) {
@@ -28,7 +29,7 @@ class PerguntaControl {
 
 	function getLista($p,$pag) {
 		//header("Content-Type: text/html; charset=UTF-8",true);
-		//header('Content-Type: text/html; charset=utf-8'); 
+		//header('Content-Type: text/html; charset=utf-8');
 		$resposta = "";
 		$where = " where 1=1 ";
 		$params = array();
@@ -42,12 +43,12 @@ class PerguntaControl {
 
 		$totalPaginas = ceil($totalReg/$itensPagina);
 		for ($i = 1; $i <= $totalPaginas; $i++) {
-			if ($pag != $i) { $resposta .= "<a href=\"javascript:lista(".$i.")\">".$i."</a>"; } 
+			if ($pag != $i) { $resposta .= "<a href=\"javascript:lista(".$i.")\">".$i."</a>"; }
 			else { $resposta .= $i; }
 			if ($i != $totalPaginas) { $resposta .= " - "; }
 		}
-		$resposta .= " | Registros: ".$totalReg;		
-		
+		$resposta .= " | Registros: ".$totalReg;
+
 		$rows = $this->bd->query( $sql, $params )->fetchAll();
 		if( count($rows) > 0 )	{
 			$resposta .= "<table border='0'><tr>".
@@ -99,9 +100,9 @@ class PerguntaControl {
 		try {
 			$this->bd->query( $sql, array( $id ) );
 			return true;
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			return false;
 		}
 	}
-	
+
 }

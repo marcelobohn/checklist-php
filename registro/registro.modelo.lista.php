@@ -1,8 +1,7 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
 	header("Content-Type: text/html; charset=UTF-8",true);
-	include_once ("../conexaoBD.php");
-	$bd = new conexaoBD();	
+	$bd = new \App\ConexaoBD();	
 	$sql = "select * from modelo m ";
 	$rows = $bd->query( $sql )->fetchAll();
 	echo "Modelos dipon&iacute;veis: <br /><select id=\"idModelo\" style=\"width:400px;\">";

@@ -1,12 +1,14 @@
 <?php require_once(__DIR__ . "/../block.php"); ?>
 <?php
+use App\Modelo;
+use App\ModeloControl;
+
 include ("config.php");
 
 isset($_REQUEST['acao']) ? $acao = $_REQUEST['acao'] : $acao = null;
 isset($_REQUEST['id']) ? $id = $_REQUEST['id'] : $id = null;
 
 if ($acao=='pesquisa') {
-	include_once ($Aplicativo.".control.php");
 	$control = new ModeloControl();
 	isset($_REQUEST['p']) ? $p = $_REQUEST['p'] : $p = null;
 	isset($_REQUEST['pag']) ? $pagina = $_REQUEST['pag'] : $pagina = null;
@@ -31,12 +33,10 @@ if ($acao=='pesquisa') {
 <?php
 if ($acao=='form') {
 	if ($id != null) { 
-		include_once ($Aplicativo.".model.php");
 		$model = new Modelo();
 		$model->setModelo($id);
 		//echo $model;
 		
-		include_once ($Aplicativo.".control.php");
 		$control = new ModeloControl();		
 	}
 ?>

@@ -1,5 +1,6 @@
 <?php
-include_once ("../conexaoBD.php");
+
+namespace App;
 
 class UsuarioControl {
 
@@ -9,7 +10,7 @@ class UsuarioControl {
 
 	//construtor
 	function __construct(){
-		$this->bd = new conexaoBD();
+		$this->bd = new ConexaoBD();
 	}
 
 	function getLista($p,$pag) {
