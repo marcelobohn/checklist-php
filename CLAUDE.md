@@ -178,6 +178,14 @@ db/
 > `SELECT` (gambiarra pré-PDO). Após a migração o id vem de `lastInsertId()`; a
 > coluna foi mantida por compatibilidade do schema.
 
+> **Foreign keys** (migration `002`): `resposta`, `modelopergunta` e
+> `registroitem`→`registro` usam **CASCADE** (filhos somem com o pai);
+> `registro`→`modelo` e `registroitem`→`pergunta` usam **RESTRICT** (não se
+> apaga modelo/pergunta com checklist respondido). `registroitem.idResposta`
+> **não** tem FK: para perguntas `marcar='S'` guarda a sentinela `1`/`0`, não um
+> `idResposta` real. O `apagar()` de pergunta/modelo trata a violação RESTRICT e
+> responde uma mensagem amigável (sem 500).
+
 ## Segurança / dívida técnica
 
 ✅ **Corrigido na migração para PDO/PHP 8:**
@@ -213,3 +221,7 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.3.0` | **Migrations, seeds** (básico/dev) e **backup/restore** | #8 |
 | `v1.4.0` | **CI** (GitHub Actions: `composer test` a cada push) | #9 |
 | `v1.4.1` | Fix do `Warning` de acesso anônimo no `index.php` | #10 |
+| `v1.4.2` | Remoção de **arquivos mortos** do projeto | #13 |
+| `v1.5.0` | Atualização do **jQuery** (1.7.1 → 3.7.1) | #14 |
+| `v1.5.1` | Fix: **cadastro novo** falhava no PHP 8 (id vazio caía em UPDATE) | #15 |
+| `v1.6.0` | **Foreign keys** no schema (migration `002`, CASCADE/RESTRICT) | #16 |

@@ -118,9 +118,15 @@ class ModeloControl {
 	}
 
 	function apagar($id){
+		// FK RESTRICT (registro->modelo): modelo com checklist respondido não
+		// pode ser apagado. Suas associações (modelopergunta) somem em cascata.
 		$sql = "delete from ".$this->tabela." where idModelo = ?";
-		$this->bd->query( $sql, array( $id ) );
-		return true;
+		try {
+			$this->bd->query( $sql, array( $id ) );
+			return true;
+		} catch (PDOException $e) {
+			return false;
+		}
 	}
 	
 }

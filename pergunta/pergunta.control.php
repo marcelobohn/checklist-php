@@ -92,9 +92,16 @@ class PerguntaControl {
 	}
 
 	function apagar($id){
+		// FK RESTRICT (registroitem->pergunta): pergunta usada em checklist
+		// respondido não pode ser apagada. Suas respostas e associações de
+		// modelo (modelopergunta) somem em cascata.
 		$sql = "delete from pergunta where idPergunta = ?";
-		$this->bd->query( $sql, array( $id ) );
-		return true;
+		try {
+			$this->bd->query( $sql, array( $id ) );
+			return true;
+		} catch (PDOException $e) {
+			return false;
+		}
 	}
 	
 }

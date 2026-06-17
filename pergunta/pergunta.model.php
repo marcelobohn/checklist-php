@@ -84,8 +84,11 @@ if (($_REQUEST['acao'] ?? '')=='apaga') {
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new PerguntaControl();
-	$control->apagar($id);
-	echo "Excluído com sucesso";
+	if ($control->apagar($id)) {
+		echo "Excluído com sucesso";
+	} else {
+		echo "Não foi possível excluir: pergunta em uso em checklists respondidos.";
+	}
 	unset($control);
 }
 

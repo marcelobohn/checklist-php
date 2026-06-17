@@ -61,8 +61,11 @@ if (($_REQUEST['acao'] ?? '')=='apaga') {
 	include_once ($Aplicativo.".control.php");
 	$id = $_REQUEST['id'];
 	$control = new ModeloControl();
-	$control->apagar($id);
-	echo "Excluído com sucesso";
+	if ($control->apagar($id)) {
+		echo "Excluído com sucesso";
+	} else {
+		echo "Não foi possível excluir: modelo com checklists respondidos.";
+	}
 	unset($control);
 }
 

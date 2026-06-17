@@ -31,7 +31,12 @@ abstract class FunctionalTestCase extends TestCase
         $this->jars = [];
 
         // Remove qualquer dado criado durante os testes (identificado pelo marcador).
+        // Ordem importa por causa das FKs: registro (RESTRICT->modelo) primeiro;
+        // ao apagá-lo o registroitem some em cascata, liberando as FKs RESTRICT
+        // que referenciam pergunta/modelo. Apagar pergunta/modelo então remove
+        // resposta e modelopergunta em cascata.
         $m = self::MARKER;
+        self::db("DELETE FROM registro WHERE usuario LIKE '%{$m}%'");
         self::db("DELETE FROM resposta WHERE descricao LIKE '%{$m}%'");
         self::db("DELETE FROM pergunta WHERE descricao LIKE '%{$m}%'");
         self::db("DELETE FROM usuario  WHERE nome LIKE '%{$m}%'");
