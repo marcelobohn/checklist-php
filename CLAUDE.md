@@ -225,3 +225,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.5.0` | Atualização do **jQuery** (1.7.1 → 3.7.1) | #14 |
 | `v1.5.1` | Fix: **cadastro novo** falhava no PHP 8 (id vazio caía em UPDATE) | #15 |
 | `v1.6.0` | **Foreign keys** no schema (migration `002`, CASCADE/RESTRICT) | #16 |
+| `v1.6.1` | Fix: incluir/remover pergunta no modelo (XHR cru ia sem CSRF → 403) | #17 |

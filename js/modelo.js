@@ -17,7 +17,7 @@ function altera(id) {
 }
 
 function grava() {
-	//ajuste manual necessário
+	//ajuste manual necessï¿½rio
 	var pNome = '';
 	pIdModelo = document.getElementById("idModelo").value;	
 	pNome = escape(document.getElementById("nome").value); //$("#nome").val();
@@ -44,36 +44,15 @@ function listaPergunta() {
 
 function incluiPergunta(modelo, pergunta) {
 	if (pergunta != null) {
-		if (window.XMLHttpRequest)  {// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		} else  {// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()   {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)     {
-				document.getElementById("resp").innerHTML=xmlhttp.responseText;
-			}
-		}
+		// Via jQuery para o ajaxPrefilter anexar o token CSRF (ver template/start.php).
 		var url = "modelo.pergunta.inclui.php?idModelo="+modelo+"&idPergunta="+pergunta;
-		xmlhttp.open("GET",url,true);
-		xmlhttp.send();	   
+		$("#resp").load(url);
 	}
 }
 
 function apagaPergunta(modelo, pergunta) {
 	if (pergunta != null) {
-		if (window.XMLHttpRequest)  {// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		} else  {// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()   {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)     {
-				document.getElementById("resp").innerHTML=xmlhttp.responseText;
-			}
-		}
 		var url = "modelo.pergunta.apaga.php?idModelo="+modelo+"&idPergunta="+pergunta;
-		xmlhttp.open("GET",url,true);
-		xmlhttp.send();	   
+		$("#resp").load(url);
 	}
 }

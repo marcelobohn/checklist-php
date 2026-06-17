@@ -58,39 +58,16 @@ function incluiResposta(pergunta) {
 	if (temp != null) {
 		//$("#divResposta").append("<li>" + temp + "");
 		$("#divResposta ul li:last").append("<li>" + temp + "</li>");
-		
-		if (window.XMLHttpRequest)  {// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		} else  {// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-  
-		xmlhttp.onreadystatechange=function()   {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)     {
-				document.getElementById("resp").innerHTML=xmlhttp.responseText;
-			}
-		}
 
-		var url = "pergunta.resposta.inclui.php?idPergunta="+pergunta+"&descricao="+temp;
-		xmlhttp.open("GET",url,true);
-		xmlhttp.send();	   
+		// Via jQuery para o ajaxPrefilter anexar o token CSRF (ver template/start.php).
+		var url = "pergunta.resposta.inclui.php?idPergunta="+pergunta+"&descricao="+encodeURIComponent(temp);
+		$("#resp").load(url);
 	}
 }
 
 function apagaResposta(pergunta, resposta) {
 	if (pergunta != null) {
-		if (window.XMLHttpRequest)  {// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		} else  {// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()   {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)     {
-				document.getElementById("resp").innerHTML=xmlhttp.responseText;
-			}
-		}
 		var url = "pergunta.resposta.apaga.php?idPergunta="+pergunta+"&idResposta="+resposta;
-		xmlhttp.open("GET",url,true);
-		xmlhttp.send();	   
+		$("#resp").load(url);
 	}
 }
