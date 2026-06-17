@@ -20,6 +20,8 @@
     },
     "scripts": {
         "test": "phpunit",
+        "test:unit": "phpunit --testsuite unitario",
+        "test:functional": "phpunit --testsuite funcional",
         "db:fresh": "db/fresh.sh",
         "db:fresh-seed": "db/fresh.sh --seed",
         "db:reset": "db/fresh.sh",
@@ -28,6 +30,8 @@
         "db:restore": "db/restore.sh"
     },
     "scripts-descriptions": {
+        "test:unit": "Roda só os testes unitários (sem app/banco).",
+        "test:functional": "Roda só os testes funcionais (requer o app dockerizado).",
         "db:fresh": "Recria o banco do zero (drop + migrations + seed básico).",
         "db:fresh-seed": "Recria o banco do zero e carrega o seed de desenvolvimento.",
         "db:reset": "Alias de db:fresh (recria o banco do zero).",

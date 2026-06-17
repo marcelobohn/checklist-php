@@ -21,6 +21,32 @@ abstract class FunctionalTestCase extends TestCase
     protected function setUp(): void
     {
         $this->baseUrl = rtrim(getenv('BASE_URL') ?: 'http://localhost/checklist', '/');
+        self::exigeAppNoAr($this->baseUrl);
+    }
+
+    /** Cache do check de disponibilidade (verifica uma vez por execução). */
+    private static ?bool $appNoAr = null;
+
+    /** Pula o teste (com mensagem clara) se o app dockerizado não estiver acessível. */
+    private static function exigeAppNoAr(string $baseUrl): void
+    {
+        if (self::$appNoAr === null) {
+            $ch = curl_init($baseUrl . '/');
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_NOBODY         => true,
+                CURLOPT_TIMEOUT        => 5,
+            ]);
+            curl_exec($ch);
+            self::$appNoAr = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE) !== 0;
+            curl_close($ch);
+        }
+
+        if (!self::$appNoAr) {
+            self::markTestSkipped(
+                "App não acessível em {$baseUrl}. Suba o ambiente: docker compose up -d --build"
+            );
+        }
     }
 
     protected function tearDown(): void

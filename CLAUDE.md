@@ -63,15 +63,24 @@ aponta `pdo_mysql.default_socket` para esse caminho.
 
 ## Testes
 
-Suíte funcional em PHPUnit (`tests/`) que bate no app dockerizado via HTTP,
-cobrindo login/sessão, controle de acesso (403), SQL injection, hash de senha,
-XSS e CSRF. Os dados criados nos testes levam o marcador `~TEST~` e são limpos
-no `tearDown` (suíte idempotente, seed preservado).
+Dois testsuites em PHPUnit:
+
+- **Funcional** (`tests/`): bate no app dockerizado via HTTP — login/sessão,
+  controle de acesso (403), SQL injection, hash de senha, XSS, CSRF e os fluxos
+  de CRUD. Dados criados levam o marcador `~TEST~` e são limpos no `tearDown`
+  (idempotente, seed preservado). Se o app não estiver no ar, esses testes são
+  **pulados** (skip) com uma mensagem clara.
+- **Unitário** (`tests/Unit/`): testa as classes de `src/App` em **isolamento**,
+  sem app nem banco — injeta um *fake* de `ConexaoBD` (via reflection) e cobre
+  `h()`, a paginação/render do `getLista`, o SQL de `inserir`/`atualizar`/`apagar`
+  e os getters/setters das entidades.
 
 ```bash
-docker compose up -d --build   # app no ar
+docker compose up -d --build   # app no ar (para os funcionais)
 composer install               # dependências de teste (uma vez)
-composer test                  # ./vendor/bin/phpunit
+composer test                  # tudo (funcional + unitário)
+composer test:unit             # só unitários (rápido, sem app)
+composer test:functional       # só funcionais
 ```
 
 Detalhes em [`tests/README.md`](tests/README.md).
@@ -275,3 +284,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.7.2` | **Remoção** do endpoint perigoso `registro.limpa.php` (truncate total) | #22 |
 | `v1.8.0` | Comandos `composer db:fresh` / `db:fresh-seed` / `db:seed` (estilo Laravel) | #23 |
 | `v1.8.1` | Atalhos `composer db:backup` / `db:restore` / `db:reset` (alias) | #24 |
+| `v1.9.0` | **Testes unitários** das classes de `src/App` (fake de `ConexaoBD`, sem app/DB) | #25 |

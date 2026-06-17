@@ -6,8 +6,12 @@
          failOnWarning="true"
          cacheDirectory=".phpunit.cache">
     <testsuites>
+        <testsuite name="unitario">
+            <directory>tests/Unit</directory>
+        </testsuite>
         <testsuite name="funcional">
             <directory>tests</directory>
+            <exclude>tests/Unit</exclude>
         </testsuite>
     </testsuites>
     <php>
