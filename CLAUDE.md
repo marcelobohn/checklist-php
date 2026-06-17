@@ -226,3 +226,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.5.1` | Fix: **cadastro novo** falhava no PHP 8 (id vazio caía em UPDATE) | #15 |
 | `v1.6.0` | **Foreign keys** no schema (migration `002`, CASCADE/RESTRICT) | #16 |
 | `v1.6.1` | Fix: incluir/remover pergunta no modelo (XHR cru ia sem CSRF → 403) | #17 |
+| `v1.6.2` | **Cache-busting** de assets (`?v=filemtime`) — correções de JS/CSS chegam ao usuário | #18 |
