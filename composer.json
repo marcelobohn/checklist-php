@@ -22,12 +22,18 @@
         "test": "phpunit",
         "db:fresh": "db/fresh.sh",
         "db:fresh-seed": "db/fresh.sh --seed",
-        "db:seed": "db/seed.sh"
+        "db:reset": "db/fresh.sh",
+        "db:seed": "db/seed.sh",
+        "db:backup": "db/backup.sh",
+        "db:restore": "db/restore.sh"
     },
     "scripts-descriptions": {
         "db:fresh": "Recria o banco do zero (drop + migrations + seed básico).",
         "db:fresh-seed": "Recria o banco do zero e carrega o seed de desenvolvimento.",
-        "db:seed": "Aplica um seed ao banco (uso: composer db:seed basic|dev)."
+        "db:reset": "Alias de db:fresh (recria o banco do zero).",
+        "db:seed": "Aplica um seed ao banco (uso: composer db:seed basic|dev).",
+        "db:backup": "Gera um backup comprimido em backups/ (mysqldump).",
+        "db:restore": "Restaura de um dump (uso: composer db:restore <arquivo.sql|.sql.gz>)."
     },
     "config": {
         "sort-packages": true

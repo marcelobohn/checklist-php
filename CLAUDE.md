@@ -193,11 +193,15 @@ Equivalentes a `migrate:fresh` / `db:seed`, operando no banco dockerizado:
 ```bash
 composer db:fresh         # dropa tudo + reaplica migrations + seed básico (admin)
 composer db:fresh-seed    # idem + seed de desenvolvimento (perguntas/modelo)
+composer db:reset         # alias de db:fresh
 composer db:seed dev      # só aplica um seed (basic|dev) — equivale a ./db/seed.sh
+composer db:backup        # gera backups/checklist-AAAAMMDD-HHMMSS.sql.gz
+composer db:restore backups/<arquivo>.sql.gz   # restaura de um dump
 ```
 
-> ⚠️ `db:fresh*` é **destrutivo** (recria o banco do zero). Rode `./db/backup.sh`
-> antes se precisar preservar os dados. Por baixo, chamam `db/fresh.sh`/`db/seed.sh`.
+> ⚠️ `db:fresh*` / `db:reset` são **destrutivos** (recriam o banco do zero). Rode
+> `composer db:backup` antes se precisar preservar os dados. Por baixo, esses
+> atalhos apenas chamam os scripts de `db/` (`fresh.sh`/`seed.sh`/`backup.sh`/`restore.sh`).
 
 > Os dados vivem no volume Docker `dbdata` (não versionado; apagado por
 > `docker compose down -v`). Só a **definição** (migrations/seeds) está no git.
@@ -270,3 +274,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.7.1` | **BaseControl**: `getLista` paginado extraído para classe base (dedup) | #21 |
 | `v1.7.2` | **Remoção** do endpoint perigoso `registro.limpa.php` (truncate total) | #22 |
 | `v1.8.0` | Comandos `composer db:fresh` / `db:fresh-seed` / `db:seed` (estilo Laravel) | #23 |
+| `v1.8.1` | Atalhos `composer db:backup` / `db:restore` / `db:reset` (alias) | #24 |
