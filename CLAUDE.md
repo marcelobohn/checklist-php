@@ -285,3 +285,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.8.0` | Comandos `composer db:fresh` / `db:fresh-seed` / `db:seed` (estilo Laravel) | #23 |
 | `v1.8.1` | Atalhos `composer db:backup` / `db:restore` / `db:reset` (alias) | #24 |
 | `v1.9.0` | **Testes unitários** das classes de `src/App` (fake de `ConexaoBD`, sem app/DB) | #25 |
+| `v1.9.1` | CI: bump `actions/checkout` v4 → v5 (silencia aviso de Node 20) | #26 |
