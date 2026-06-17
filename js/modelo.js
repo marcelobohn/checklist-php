@@ -45,14 +45,15 @@ function listaPergunta() {
 function incluiPergunta(modelo, pergunta) {
 	if (pergunta != null) {
 		// Via jQuery para o ajaxPrefilter anexar o token CSRF (ver template/start.php).
+		// Atualiza a lista SÓ após a inclusão concluir (no callback), evitando a race.
 		var url = "modelo.pergunta.inclui.php?idModelo="+modelo+"&idPergunta="+pergunta;
-		$("#resp").load(url);
+		$.get(url, function() { listaPergunta(); });
 	}
 }
 
 function apagaPergunta(modelo, pergunta) {
 	if (pergunta != null) {
 		var url = "modelo.pergunta.apaga.php?idModelo="+modelo+"&idPergunta="+pergunta;
-		$("#resp").load(url);
+		$.get(url, function() { listaPergunta(); });
 	}
 }

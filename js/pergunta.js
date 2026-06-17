@@ -56,18 +56,16 @@ function excluir() {
 function incluiResposta(pergunta) {
 	var temp = prompt("Digite a resposta", "");
 	if (temp != null) {
-		//$("#divResposta").append("<li>" + temp + "");
-		$("#divResposta ul li:last").append("<li>" + temp + "</li>");
-
 		// Via jQuery para o ajaxPrefilter anexar o token CSRF (ver template/start.php).
+		// Atualiza a lista SÓ após a inclusão concluir (no callback), evitando a race.
 		var url = "pergunta.resposta.inclui.php?idPergunta="+pergunta+"&descricao="+encodeURIComponent(temp);
-		$("#resp").load(url);
+		$.get(url, function() { listaResposta(true); });
 	}
 }
 
 function apagaResposta(pergunta, resposta) {
 	if (pergunta != null) {
 		var url = "pergunta.resposta.apaga.php?idPergunta="+pergunta+"&idResposta="+resposta;
-		$("#resp").load(url);
+		$.get(url, function() { listaResposta(true); });
 	}
 }

@@ -22,7 +22,7 @@ class ModeloControl {
 			$resposta .= "<option value=".$r['idPergunta']." >".h($r['descricao'])."</option>";
 		}
 		$resposta .= "</select>";
-		$resposta .=  "<a href=\"javascript:incluiPergunta(idModelo.value, idPergunta.value);listaPergunta()\">Inclui pergunta</a><br />";
+		$resposta .=  "<a href=\"javascript:incluiPergunta(idModelo.value, idPergunta.value)\">Inclui pergunta</a><br />";
 	}
 	$resposta .= "Perguntas selecionadas: <ul style=\"list-style-type: none;\">";
 	$sql = "select mp.*, p.descricao from modelopergunta mp";
@@ -35,7 +35,7 @@ class ModeloControl {
 			$recNo++;
 			//echo $r['descricao']." - ".$r['marcar']."<br />";
 			$resposta .= "<li>";
-			$resposta .= "<a href=\"javascript:apagaPergunta(".$id.",".$r['idPergunta'].");listaPergunta()\"><b>X</b></a>&nbsp;&nbsp;";
+			$resposta .= "<a href=\"javascript:apagaPergunta(".$id.",".$r['idPergunta'].")\"><b>X</b></a>&nbsp;&nbsp;";
 /*
 			if ($recNo!=1) 
 				$resposta .= "<img src=\"../img/arrow_up.png\" onclick=\"alert('clicou')\" style=\"cursor:pointer;\" >";

@@ -14,13 +14,13 @@ class PerguntaControl {
 	function getListaResposta($id) {
 		$resposta = "";
 		$resposta .=  "<span style=\"font-size:16px; float:left;\">Respostas</span> &nbsp;&nbsp;&nbsp; ";
-		$resposta .=  "<a href=\"javascript:incluiResposta(idPergunta.value);;listaResposta(true)\">Inclui resposta</a><br />";
+		$resposta .=  "<a href=\"javascript:incluiResposta(idPergunta.value)\">Inclui resposta</a><br />";
 		$resposta .= "<ul>";
 		$sql = "select * from resposta where idPergunta = ?";
 		$rows = $this->bd->query( $sql, array( $id ) )->fetchAll();
 
 		foreach( $rows as $r ){
-			$resposta .= "<li>".h($r['descricao'])."&nbsp;&nbsp;<a href=\"javascript:apagaResposta(".$id.",".$r['idResposta'].");listaResposta(true)\"><b>X</b></a> </li>";
+			$resposta .= "<li>".h($r['descricao'])."&nbsp;&nbsp;<a href=\"javascript:apagaResposta(".$id.",".$r['idResposta'].")\"><b>X</b></a> </li>";
 		}
 		echo "</ul>";
 		return $resposta;
