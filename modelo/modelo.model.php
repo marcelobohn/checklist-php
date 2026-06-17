@@ -76,7 +76,7 @@ if (($_REQUEST['acao'] ?? '')=='grava') {
 	$model->setIdModelo($_REQUEST['idModelo']);
 	$model->setNome($_REQUEST['nome']);
 
-	if ($model->idModelo != 0) {	
+	if ((int)$model->idModelo > 0) {
 		$control->atualizar($model);
 	} else {
 		$control->inserir($model);	

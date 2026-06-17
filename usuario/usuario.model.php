@@ -101,7 +101,7 @@ if (($_REQUEST['acao'] ?? '')=='grava') {
 	$model->setSenha($_REQUEST['senha']);
 	$model->setAdmin($_REQUEST['admin']);
 
-	if ($model->idUsuario != 0) {
+	if ((int)$model->idUsuario > 0) {
 		$control->atualizar($model);
 	} else {
 		$control->inserir($model);

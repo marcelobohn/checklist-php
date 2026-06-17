@@ -35,13 +35,18 @@ abstract class FunctionalTestCase extends TestCase
         self::db("DELETE FROM resposta WHERE descricao LIKE '%{$m}%'");
         self::db("DELETE FROM pergunta WHERE descricao LIKE '%{$m}%'");
         self::db("DELETE FROM usuario  WHERE nome LIKE '%{$m}%'");
+        self::db("DELETE FROM modelo   WHERE nome LIKE '%{$m}%'");
     }
 
-    /** Cria uma pergunta via o endpoint real (com CSRF) e retorna a resposta HTTP. */
+    /**
+     * Cria uma pergunta via o endpoint real (com CSRF) e retorna a resposta HTTP.
+     * Usa idPergunta VAZIO de propósito — é o que o formulário envia para um
+     * registro novo (ver regressão da #15).
+     */
     protected function criaPergunta(string $jar, string $descricao, string $marcar = 'S', string $resposta = 'N'): array
     {
         return $this->get('/pergunta/pergunta.model.php', $jar, [
-            'acao' => 'grava', 'idPergunta' => 0, 'descricao' => $descricao,
+            'acao' => 'grava', 'idPergunta' => '', 'descricao' => $descricao,
             'marcar' => $marcar, 'resposta' => $resposta, 'csrf' => $this->csrfToken($jar),
         ]);
     }
@@ -50,7 +55,7 @@ abstract class FunctionalTestCase extends TestCase
     protected function criaUsuario(string $jar, string $nome, string $senha, string $admin = 'N'): array
     {
         return $this->get('/usuario/usuario.model.php', $jar, [
-            'acao' => 'grava', 'idUsuario' => 0, 'nome' => $nome,
+            'acao' => 'grava', 'idUsuario' => '', 'nome' => $nome,
             'senha' => $senha, 'admin' => $admin, 'csrf' => $this->csrfToken($jar),
         ]);
     }

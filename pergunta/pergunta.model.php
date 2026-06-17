@@ -111,7 +111,7 @@ if (($_REQUEST['acao'] ?? '')=='grava') {
 	//echo "descricao: ".to_utf8($_REQUEST['descricao'])."<br />";
 	}*/
 	
-	if ($model->idPergunta != 0) {	
+	if ((int)$model->idPergunta > 0) {
 		$control->atualizar($model);
 	} else {
 		$control->inserir($model);	
