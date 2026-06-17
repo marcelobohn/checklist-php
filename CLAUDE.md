@@ -178,13 +178,26 @@ db/
   migrations/001_init_schema.sql   # DDL versionado (tracking em schema_migrations)
   seeds/basic.sql                  # essencial: usuário admin (auto, no 1º up)
   seeds/dev.sql                    # exemplos: perguntas/modelo (opt-in)
-  migrate.sh   seed.sh   backup.sh   restore.sh
+  migrate.sh   fresh.sh   seed.sh   backup.sh   restore.sh
 ```
 
 - **1º `up`** (banco novo): `docker/initdb.sh` aplica as migrations e o seed básico.
 - **Migrations futuras**: adicione `db/migrations/NNN_*.sql` e rode `./db/migrate.sh`.
 - **Exemplos de dev**: `./db/seed.sh dev` (e `./db/seed.sh basic` para o essencial).
 - **Backup/restore**: `./db/backup.sh` (gera `backups/*.sql.gz`) e `./db/restore.sh <arquivo>`.
+
+### Atalhos estilo Laravel (Composer)
+
+Equivalentes a `migrate:fresh` / `db:seed`, operando no banco dockerizado:
+
+```bash
+composer db:fresh         # dropa tudo + reaplica migrations + seed básico (admin)
+composer db:fresh-seed    # idem + seed de desenvolvimento (perguntas/modelo)
+composer db:seed dev      # só aplica um seed (basic|dev) — equivale a ./db/seed.sh
+```
+
+> ⚠️ `db:fresh*` é **destrutivo** (recria o banco do zero). Rode `./db/backup.sh`
+> antes se precisar preservar os dados. Por baixo, chamam `db/fresh.sh`/`db/seed.sh`.
 
 > Os dados vivem no volume Docker `dbdata` (não versionado; apagado por
 > `docker compose down -v`). Só a **definição** (migrations/seeds) está no git.
@@ -256,3 +269,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.7.0` | **Autoload PSR-4**: classes em `src/App`, fim dos `include_once` manuais | #20 |
 | `v1.7.1` | **BaseControl**: `getLista` paginado extraído para classe base (dedup) | #21 |
 | `v1.7.2` | **Remoção** do endpoint perigoso `registro.limpa.php` (truncate total) | #22 |
+| `v1.8.0` | Comandos `composer db:fresh` / `db:fresh-seed` / `db:seed` (estilo Laravel) | #23 |

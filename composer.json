@@ -19,7 +19,15 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "db:fresh": "db/fresh.sh",
+        "db:fresh-seed": "db/fresh.sh --seed",
+        "db:seed": "db/seed.sh"
+    },
+    "scripts-descriptions": {
+        "db:fresh": "Recria o banco do zero (drop + migrations + seed básico).",
+        "db:fresh-seed": "Recria o banco do zero e carrega o seed de desenvolvimento.",
+        "db:seed": "Aplica um seed ao banco (uso: composer db:seed basic|dev)."
     },
     "config": {
         "sort-packages": true
