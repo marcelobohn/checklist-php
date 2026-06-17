@@ -114,9 +114,10 @@ As classes ficam em `src/`, namespace `App\`, carregadas por **autoload do Compo
 |--------|---------|
 | `App\ConexaoBD` | `src/ConexaoBD.php` — PDO. Ver [Acesso a dados](#acesso-a-dados-pdo) |
 | `App\TemplateParser` | `src/TemplateParser.php` — *template engine* (`{Tag}` via `ob_start`/`include`) |
-| `App\Pergunta` / `App\PerguntaControl` | `src/Pergunta.php` / `src/PerguntaControl.php` |
-| `App\Modelo` / `App\ModeloControl` | `src/Modelo.php` / `src/ModeloControl.php` |
-| `App\Usuario` / `App\UsuarioControl` | `src/Usuario.php` / `src/UsuarioControl.php` |
+| `App\BaseControl` | `src/BaseControl.php` — base abstrata: `getLista` paginado + `renderTabela()` (template method) |
+| `App\Pergunta` / `App\PerguntaControl` | `src/Pergunta.php` / `src/PerguntaControl.php` (control estende `BaseControl`) |
+| `App\Modelo` / `App\ModeloControl` | `src/Modelo.php` / `src/ModeloControl.php` (control estende `BaseControl`) |
+| `App\Usuario` / `App\UsuarioControl` | `src/Usuario.php` / `src/UsuarioControl.php` (control estende `BaseControl`) |
 
 O autoloader é carregado nos bootstraps: `block.php` (endpoints autenticados),
 `template/start.php` (páginas de índice) e `login.php`. Dentro do `namespace App`,
@@ -253,3 +254,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.6.2` | **Cache-busting** de assets (`?v=filemtime`) — correções de JS/CSS chegam ao usuário | #18 |
 | `v1.6.3` | Fix: lista de pergunta/resposta não atualizava (refresh rodava antes do AJAX — race) | #19 |
 | `v1.7.0` | **Autoload PSR-4**: classes em `src/App`, fim dos `include_once` manuais | #20 |
+| `v1.7.1` | **BaseControl**: `getLista` paginado extraído para classe base (dedup) | #21 |

@@ -2,64 +2,33 @@
 
 namespace App;
 
-class UsuarioControl {
+class UsuarioControl extends BaseControl {
 
-	/* Conexão com o banco de dados */
-	var $bd;
 	var $tabela = "usuario";
+	protected $colunaBusca = "nome";
 
-	//construtor
-	function __construct(){
-		$this->bd = new ConexaoBD();
-	}
-
-	function getLista($p,$pag) {
-		$resposta = "";
-		$where = " where 1=1 ";
-		$params = array();
-		if ($p != null) { $where .= "  and nome like ?"; $params[] = $p."%"; }
-
-		$totalReg = $this->bd->query("select count(*) from ".$this->tabela.$where, $params)->fetchColumn();
-		$itensPagina = 10;
-		$ini = ($pag - 1) * $itensPagina;
-
-		$sql = "select * from ".$this->tabela.$where." order by nome LIMIT ".(int)$ini.", ".(int)$itensPagina;
-
-		$totalPaginas = ceil($totalReg/$itensPagina);
-		for ($i = 1; $i <= $totalPaginas; $i++) {
-			if ($pag != $i) { $resposta .= "<a href=\"javascript:lista(".$i.")\">".$i."</a>"; }
-			else { $resposta .= $i; }
-			if ($i != $totalPaginas) { $resposta .= " - "; }
-		}
-		$resposta .= " | Registros: ".$totalReg;
-
-		$rows = $this->bd->query( $sql, $params )->fetchAll();
-		if( count($rows) > 0 )	{
-			$resposta .= "<table border='0'><tr>".
-			"<th></th>".
-			"<th>Código</th>".
-			"<th style=\"width:200px;\">Nome</th>".
-			"<th>Admin</th>".
+	protected function renderTabela($rows) {
+		$resposta = "<table border='0'><tr>".
+		"<th></th>".
+		"<th>Código</th>".
+		"<th style=\"width:200px;\">Nome</th>".
+		"<th>Admin</th>".
+		"</tr>";
+		foreach( $rows as $r ){
+			$resposta = $resposta .
+			"\n<tr> " .
+			"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
+			"<td>".$r[0]."</td>";
+			if (($_SESSION['modo'] ?? '')=='de') { $resposta .=
+				"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['nome'])."</a></td>"; }
+			else { $resposta .=
+				"<td>".h($r['nome'])."</td>"; }
+			$resposta .=
+				"<td>".$r['admin']."</td>";
+			$resposta .=
 			"</tr>";
-			foreach( $rows as $r ){
-				$resposta = $resposta .
-				"\n<tr> " .
-				"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
-				"<td>".$r[0]."</td>";
-				if (($_SESSION['modo'] ?? '')=='de') { $resposta .=
-					"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['nome'])."</a></td>"; }
-				else { $resposta .=
-					"<td>".h($r['nome'])."</td>"; }
-				$resposta .=
-					"<td>".$r['admin']."</td>";
-				$resposta .=
-				"</tr>";
-			}
-			$resposta = $resposta . "</table>\n";
-
 		}
-		else
-		$resposta = "Não foi encontrado nenhum dado.";
+		$resposta = $resposta . "</table>\n";
 		return $resposta;
 	}
 

@@ -2,16 +2,10 @@
 
 namespace App;
 
-class ModeloControl {
+class ModeloControl extends BaseControl {
 
-	/* Conexão com o banco de dados */
-	var $bd;
 	var $tabela = "modelo";
-
-	//construtor
-	function __construct(){
-		$this->bd = new ConexaoBD();
-	}
+	protected $colunaBusca = "nome";
 
 	function getListaPergunta($id) {
 	$resposta = "<br />";
@@ -56,53 +50,27 @@ class ModeloControl {
 	return $resposta;
 	}
 
-	function getLista($p,$pag) {
-		//header("Content-Type: text/html; charset=UTF-8",true);
-		$resposta = "";
-		$where = " where 1=1 ";
-		$params = array();
-		if ($p != null) { $where .= "  and nome like ?"; $params[] = $p."%"; }
-
-		$totalReg = $this->bd->query("select count(*) from ".$this->tabela.$where, $params)->fetchColumn();
-		$itensPagina = 10;
-		$ini = ($pag - 1) * $itensPagina;
-
-		$sql = "select * from ".$this->tabela.$where." order by nome LIMIT ".(int)$ini.", ".(int)$itensPagina;
-
-		$totalPaginas = ceil($totalReg/$itensPagina);
-		for ($i = 1; $i <= $totalPaginas; $i++) {
-			if ($pag != $i) { $resposta .= "<a href=\"javascript:lista(".$i.")\">".$i."</a>"; }
-			else { $resposta .= $i; }
-			if ($i != $totalPaginas) { $resposta .= " - "; }
-		}
-		$resposta .= " | Registros: ".$totalReg;
-
-		$rows = $this->bd->query( $sql, $params )->fetchAll();
-		if( count($rows) > 0 )	{
-			$resposta .= "<table border='0'><tr>".
-			"<th></th>".
-			"<th>Código</th>".
-			"<th>Nome</th>".
+	protected function renderTabela($rows) {
+		$resposta = "<table border='0'><tr>".
+		"<th></th>".
+		"<th>Código</th>".
+		"<th>Nome</th>".
+		"</tr>";
+		foreach( $rows as $r ){
+			$resposta = $resposta .
+			"\n<tr> " .
+			"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
+			"<td>".$r[0]."</td>";
+			if (($_SESSION['perfil'] ?? '')=='adm') { $resposta .=
+				"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['nome'])."</a></td>"; }
+			else { $resposta .=
+				"<td>".h($r['nome'])."</td>"; }
+			$resposta .=
+			"<td>".($r['marcar'] ?? '')."</td>" .
+			"<td>".($r['resposta'] ?? '')."</td>" .
 			"</tr>";
-			foreach( $rows as $r ){
-				$resposta = $resposta .
-				"\n<tr> " .
-				"<td><input type=\"checkbox\" value=\"".$r[0]."\"></td>" .
-				"<td>".$r[0]."</td>";
-				if (($_SESSION['perfil'] ?? '')=='adm') { $resposta .=
-					"<td><a href=\"javascript:altera(".$r[0].");\">".h($r['nome'])."</a></td>"; }
-				else { $resposta .=
-					"<td>".h($r['nome'])."</td>"; }
-				$resposta .=
-				"<td>".($r['marcar'] ?? '')."</td>" .
-				"<td>".($r['resposta'] ?? '')."</td>" .
-				"</tr>";
-			}
-			$resposta = $resposta . "</table>\n";
-
 		}
-		else
-			$resposta = "Não foi encontrado nenhum dado.";
+		$resposta = $resposta . "</table>\n";
 		return $resposta;
 	}
 
