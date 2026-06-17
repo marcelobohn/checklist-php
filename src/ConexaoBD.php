@@ -65,10 +65,4 @@ class ConexaoBD
 			return $texto;
 		}
 	}
-
-	function limpaTabela($tabela)
-	{
-		// nome de tabela nao pode ser parametrizado; uso interno/controlado
-		$this->con->exec("truncate table " . $tabela);
-	}
 }

@@ -225,8 +225,8 @@ db/
 - **CSRF** → token por sessão (`start.php`) anexado a todo AJAX via `$.ajaxPrefilter` e validado nos endpoints de escrita (`csrf.php`).
 
 Não há mais itens de dívida técnica de segurança pendentes do levantamento inicial.
-Possível melhoria futura: remover o endpoint perigoso `registro.limpa.php`
-(truncate de todas as tabelas).
+O endpoint perigoso `registro.limpa.php` (truncate de todas as tabelas) foi
+**removido** (junto com o helper `ConexaoBD::limpaTabela()`).
 
 ## Histórico de releases
 
@@ -255,3 +255,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.6.3` | Fix: lista de pergunta/resposta não atualizava (refresh rodava antes do AJAX — race) | #19 |
 | `v1.7.0` | **Autoload PSR-4**: classes em `src/App`, fim dos `include_once` manuais | #20 |
 | `v1.7.1` | **BaseControl**: `getLista` paginado extraído para classe base (dedup) | #21 |
+| `v1.7.2` | **Remoção** do endpoint perigoso `registro.limpa.php` (truncate total) | #22 |

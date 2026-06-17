@@ -14,7 +14,6 @@ class AuthGuardTest extends FunctionalTestCase
             'listagem AJAX'           => ['/pergunta/pergunta.view.php?acao=pesquisa&p=&pag=1'],
             'consulta de registro'    => ['/consulta/consulta.monta.php?registro=1'],
             'exclusão de modelo'      => ['/modelo/modelo.model.php?acao=apaga&id=1'],
-            'reset perigoso'          => ['/registro/registro.limpa.php'],
         ];
     }
 
