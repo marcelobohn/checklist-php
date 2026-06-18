@@ -253,7 +253,13 @@ composer db:restore backups/<arquivo>.sql.gz   # restaura de um dump
 - **Senhas em texto puro** → hash bcrypt (`password_hash` / `password_verify`); editar usuário sem informar senha mantém a atual.
 - **Credenciais fixas** no fonte → lidas de variáveis de ambiente (`DB_*`); ver [Conexão com o banco](#conexão-com-o-banco).
 - **`block.php`** (anti-hotlink por `HTTP_REFERER`, ilusório) → **guard de sessão** (403) aplicado a todos os entry points; endpoints anônimos passam a ser bloqueados.
-- **Escape de saída (XSS)** → todo dado vindo do banco/usuário é impresso via o helper `h()` (`htmlspecialchars` com `ENT_QUOTES`), definido em `src/helpers.php`.
+- **Escape de saída (XSS)** → todo dado de **texto livre** vindo do banco/usuário é
+  impresso via o helper `h()` (`htmlspecialchars` com `ENT_QUOTES`), definido em
+  `src/helpers.php`. **Exceção documentada:** valores **estruturalmente seguros** são
+  impressos crus de propósito — **IDs inteiros** (`AUTO_INCREMENT`: `$r[0]`,
+  `getIdUsuario()`, `idPergunta`…) e **flags `S`/`N`** (`marcar`, `resposta`, `admin`).
+  Um auto-increment nunca contém `<`/`"` e as flags só guardam `S`/`N`, então não há
+  superfície de XSS. Regra prática: **todo campo de texto digitável passa por `h()`**.
 - **CSRF** → token por sessão (`start.php`) anexado a todo AJAX via `$.ajaxPrefilter` e validado nos endpoints de escrita (`csrf.php`).
 
 Não há mais itens de dívida técnica de segurança pendentes do levantamento inicial.
