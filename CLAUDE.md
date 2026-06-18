@@ -151,6 +151,31 @@ nos testes) permanecem **sem tipo**, de propósito.
   compara `$_REQUEST['csrf']` com `$_SESSION['csrf']` (gerado em `start.php`) e retorna **403** se inválido.
   O token é anexado automaticamente às requisições AJAX por um `$.ajaxPrefilter` (ver `template/start.php`).
 
+### Front-end e CSS
+
+Um único arquivo **`css/style.css`**, carregado em `template/start.php` com
+cache-busting (`?v=filemtime`, via `$asset`). Foi revisado em etapas (uma issue
+por mudança) e hoje está **limpo, responsivo e temável**:
+
+- **Responsivo** — `<meta name="viewport">` nos templates, `box-sizing: border-box`
+  global e uma media query (`max-width: 700px`) que empilha o layout de duas
+  colunas (menu lateral + conteúdo) em **coluna única** no celular.
+- **Cores por variáveis** — bloco `:root` com `--cor-*` e `--fonte-base`
+  (esta termina em `sans-serif`); nada de literais de cor espalhados.
+- **Sem `style=` inline nas views** — larguras de campo viraram classes
+  (`.campo` 400px, `.campo-medio` 200px, `.rotulo-fixo` 180px, `.sem-marcador`,
+  `.respostas-titulo`), aplicadas nas `*.view.php`, no `registro/` e nas classes
+  `*Control`.
+- ⚠️ **Caveat — layout por JS:** `js/util.js` tem `ajustaTela()`, um ajuste
+  herdado que define **largura/altura inline** de `#divCorpo`/`#divConteudo` no
+  desktop (estilo inline vence o CSS). Abaixo de 700px ele se **desativa** e
+  devolve o controle ao CSS. Por isso, mexer na largura/altura desses dois
+  elementos passa por `ajustaTela()`, não só pelo `.css`.
+
+> Histórico da revisão: regras mortas (#30), fundação responsiva (#31), layout
+> mobile (#32), inline → classes (#33), variáveis de cor (#34). São mudanças de
+> front-end sem versão de release (não entram na tabela abaixo).
+
 ### Acesso a dados (PDO)
 
 Toda query passa pela classe `App\ConexaoBD`. O método central é:
