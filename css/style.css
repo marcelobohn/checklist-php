@@ -17,6 +17,12 @@ label,input {
 	float: left;
 }
 
+/* Campos nunca estouram o container — constrange larguras fixas (ex.: alguns
+   inputs ainda têm style="width:400px" inline) sem precisar editar as views. */
+input, select, textarea {
+	max-width: 100%;
+}
+
 label {
 	text-align: left;
 	/* 115px = 95px + 20px de padding-right: sob box-sizing:border-box o padding
@@ -167,4 +173,33 @@ ul.menu {
  	list-style-type: none;
  	padding: 0px;
 	margin:0px;
+}
+
+/* Responsivo: em telas estreitas o layout de duas colunas (menu lateral +
+   conteúdo) empilha em coluna única. O lateral vira a primeira "linha" e o
+   conteúdo ocupa a largura toda. */
+@media (max-width: 700px) {
+	#divMenu {
+		/* os botões e o campo de busca (inputs com float:left) quebram em mais
+		   de uma linha no celular; sem isto eles vazam dos 30px fixos e
+		   espremem o #divConteudo (BFC) ao lado. */
+		height: auto;
+		display: flow-root;
+	}
+	#divLateral {
+		float: none;
+		width: auto;
+		margin: 10px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid black;
+	}
+	#divConteudo {
+		/* a borda-esquerda tracejada (separador das colunas) não faz sentido
+		   quando o conteúdo está empilhado abaixo do menu. */
+		border-left: none;
+		margin-left: 10px;
+		/* width:auto não preenchia (resíduo do truque BFC-ao-lado-do-float do
+		   layout desktop); 100% + box-sizing:border-box ocupa a largura toda. */
+		width: 100%;
+	}
 }
