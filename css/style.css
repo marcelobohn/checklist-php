@@ -17,10 +17,29 @@ label,input {
 	float: left;
 }
 
-/* Campos nunca estouram o container — constrange larguras fixas (ex.: alguns
-   inputs ainda têm style="width:400px" inline) sem precisar editar as views. */
+/* Campos nunca estouram o container — constrange larguras fixas no celular. */
 input, select, textarea {
 	max-width: 100%;
+}
+
+/* Larguras de campos/colunas extraídas de estilos inline das views. */
+.campo {
+	width: 400px;
+	max-width: 100%;
+}
+.campo-medio {
+	width: 200px;
+	max-width: 100%;
+}
+.rotulo-fixo {
+	width: 180px;
+}
+.sem-marcador {
+	list-style-type: none;
+}
+.respostas-titulo {
+	font-size: 16px;
+	float: left;
 }
 
 label {

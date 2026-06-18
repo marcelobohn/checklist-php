@@ -46,7 +46,7 @@ if ($acao=='form') {
 <hr />
   <!--<legend>Login:</legend>-->
 <label for="lcodigo">Código </label><input type="hidden" value="<?php if (isset($model)) {echo $model->getIdModelo();} ?>" id="idModelo"><?php if (isset($model)) {echo $model->getIdModelo();} ?><br />
-<label for="lnome">Nome </label><input type="text" value="<?php if (isset($model)) {echo h($model->getNome());} ?>" id="nome" style="width:400px;"><br />
+<label for="lnome">Nome </label><input type="text" value="<?php if (isset($model)) {echo h($model->getNome());} ?>" id="nome" class="campo"><br />
 
 <div id="divPergunta">
 <?php

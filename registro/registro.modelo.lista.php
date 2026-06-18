@@ -4,7 +4,7 @@
 	$bd = new \App\ConexaoBD();	
 	$sql = "select * from modelo m ";
 	$rows = $bd->query( $sql )->fetchAll();
-	echo "Modelos dipon&iacute;veis: <br /><select id=\"idModelo\" style=\"width:400px;\">";
+	echo "Modelos dipon&iacute;veis: <br /><select id=\"idModelo\" class=\"campo\">";
 	foreach( $rows as $r ){
 		echo "<option value=".$r['idModelo']." >".h($r['nome'])."</option>";
 	}

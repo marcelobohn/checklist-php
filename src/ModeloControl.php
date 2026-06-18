@@ -21,7 +21,7 @@ class ModeloControl extends BaseControl {
 		$resposta .= "</select>";
 		$resposta .=  "<a href=\"javascript:incluiPergunta(idModelo.value, idPergunta.value)\">Inclui pergunta</a><br />";
 	}
-	$resposta .= "Perguntas selecionadas: <ul style=\"list-style-type: none;\">";
+	$resposta .= "Perguntas selecionadas: <ul class=\"sem-marcador\">";
 	$sql = "select mp.*, p.descricao from modelopergunta mp";
 	$sql .= "  join pergunta p on mp.idPergunta = p.idPergunta";
 	$sql .= "  where idModelo = ? order by ordem";

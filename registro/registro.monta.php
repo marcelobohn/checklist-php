@@ -12,11 +12,11 @@
 	$rows = $bd->query( $sql, array( $_REQUEST['modelo'] ) )->fetchAll();
 	echo "<form name=\"checklist\" method=\"POST\">\n";
 	//echo "<input type=\"text\" id=\"idModelo\" value=\"".$_REQUEST['modelo']."\" /><br />\n"; //hidden
-	echo "<label style=\"width:180px;\">Usuario: </label><input type=\"text\" name=\"usuario\" id=\"usuario\" style=\"width:400px;\"><br />";
-	echo "<label style=\"width:180px;\">Versão: </label><input type=\"text\" name=\"versao\" id=\"versao\" style=\"width:200px;\"><br />";
-	echo "<label style=\"width:180px;\">Cliente: </label><input type=\"text\" name=\"base\" id=\"base\" style=\"width:200px;\"><br />";
-	echo "<label style=\"width:180px;\">Tarefa: </label><input type=\"text\" name=\"tarefa\" id=\"tarefa\" style=\"width:200px;\"><br />";
-	echo "<label style=\"width:180px;\">Código Cliente: </label><input type=\"text\" name=\"cliente\" id=\"cliente\" style=\"width:200px;\"><br />";
+	echo "<label class=\"rotulo-fixo\">Usuario: </label><input type=\"text\" name=\"usuario\" id=\"usuario\" class=\"campo\"><br />";
+	echo "<label class=\"rotulo-fixo\">Versão: </label><input type=\"text\" name=\"versao\" id=\"versao\" class=\"campo-medio\"><br />";
+	echo "<label class=\"rotulo-fixo\">Cliente: </label><input type=\"text\" name=\"base\" id=\"base\" class=\"campo-medio\"><br />";
+	echo "<label class=\"rotulo-fixo\">Tarefa: </label><input type=\"text\" name=\"tarefa\" id=\"tarefa\" class=\"campo-medio\"><br />";
+	echo "<label class=\"rotulo-fixo\">Código Cliente: </label><input type=\"text\" name=\"cliente\" id=\"cliente\" class=\"campo-medio\"><br />";
 	
 	$numero = 0;
 	foreach( $rows as $r ){

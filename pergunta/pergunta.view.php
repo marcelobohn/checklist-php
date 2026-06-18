@@ -46,8 +46,8 @@ if ($acao=='form') {
 <input type="button" value="Grava" onclick="grava();lista();"> <input type="button" value="Cancela" onclick="lista()"><br />
 <hr />
   <!--<legend>Login:</legend>-->
-<label for="codigo">Código </label><input type="hidden" value="<?php if (isset($model)) {echo $model->getIdPergunta();} ?>" id="idPergunta" style="width:100px;"><?php if (isset($model)) {echo $model->getIdPergunta();} ?><br />
-<label for="nome">Descricao </label><input type="text" value="<?php if (isset($model)) {echo h($model->getDescricao());} ?>" id="descricao" style="width:400px;"><br />
+<label for="codigo">Código </label><input type="hidden" value="<?php if (isset($model)) {echo $model->getIdPergunta();} ?>" id="idPergunta"><?php if (isset($model)) {echo $model->getIdPergunta();} ?><br />
+<label for="nome">Descricao </label><input type="text" value="<?php if (isset($model)) {echo h($model->getDescricao());} ?>" id="descricao" class="campo"><br />
 <label for="cidade">Marcar </label><input type="checkbox" <?php if (isset($model)) { if ($model->getMarcar()=="S") { echo "checked=\"checked\"";}} ?> id="marcar"><br />
 <label for="site">Resposta </label><input type="checkbox" <?php if (isset($model)) { if ($model->getResposta()=="S") { echo "checked=\"checked\"";}} ?> id="resposta" onclick="listaResposta(resposta.checked)"><br />
 

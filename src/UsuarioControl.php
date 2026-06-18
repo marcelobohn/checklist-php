@@ -13,7 +13,7 @@ class UsuarioControl extends BaseControl {
 		$resposta = "<table border='0'><tr>".
 		"<th></th>".
 		"<th>Código</th>".
-		"<th style=\"width:200px;\">Nome</th>".
+		"<th class=\"campo-medio\">Nome</th>".
 		"<th>Admin</th>".
 		"</tr>";
 		foreach( $rows as $r ){

@@ -11,7 +11,7 @@ class PerguntaControl extends BaseControl {
 
 	function getListaResposta($id): string {
 		$resposta = "";
-		$resposta .=  "<span style=\"font-size:16px; float:left;\">Respostas</span> &nbsp;&nbsp;&nbsp; ";
+		$resposta .=  "<span class=\"respostas-titulo\">Respostas</span> &nbsp;&nbsp;&nbsp; ";
 		$resposta .=  "<a href=\"javascript:incluiResposta(idPergunta.value)\">Inclui resposta</a><br />";
 		$resposta .= "<ul>";
 		$sql = "select * from resposta where idPergunta = ?";
