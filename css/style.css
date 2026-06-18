@@ -1,13 +1,6 @@
 body {
 	background: #eaeaea;
 	margin: 15px;
-	scrollbar-face-color: #ECECEC;
-	scrollbar-highlight-color: #ECECEC;
-	scrollbar-3dlight-color: #999;
-	scrollbar-darkshadow-color: #999;
-	scrollbar-shadow-color: #999;
-	scrollbar-arrow-color: #999;
-	scrollbar-track-color: #ECECEC;
 }
 
 img {
@@ -73,7 +66,6 @@ A:hover {
 }
 /* componentes de tela */
 #divPagina {
-	position: center;
 	margin: auto;
 }
 
@@ -81,7 +73,6 @@ A:hover {
 	background: #f8f8f8;
 	/*padding: 16px 18px 18px 18px;*/
 	/*border: 1px solid #bbbbbb;*/
-	margin-bottom: 4px;
 	font-size: 14px;
 	font-family: Arial, Helvetica, Verdana;
 	/*width: 600px;*/
@@ -130,7 +121,6 @@ A:hover {
 }
 
 #divLogin {
-	margin: 10px;
 	padding: 40px;
 	border: 20px solid #bbbbbb;
 	border-right: 20px solid #eaeaea;
@@ -163,20 +153,8 @@ A:hover {
 	font-size: 30px;
 }
 
-.socialmedia-buttons img.fade:hover {
-	opacity: 1 !important;
-	-moz-opacity: 1 !important;
-	-webkit-transition: all 0.2s ease-in;
-	-moz-transition: all 0.2s ease-in;
-	transition: all 0.2s ease;
-}
-
-ul.menu, li.menu {
+ul.menu {
  	list-style-type: none;
  	padding: 0px;
 	margin:0px;
-}
-li.menu {
-	height: 90px;
-	border: 1px solid black;
 }
