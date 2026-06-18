@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class ModeloControl extends BaseControl {
@@ -7,7 +9,7 @@ class ModeloControl extends BaseControl {
 	var $tabela = "modelo";
 	protected $colunaBusca = "nome";
 
-	function getListaPergunta($id) {
+	function getListaPergunta($id): string {
 	$resposta = "<br />";
 	$sql = "select * from pergunta p where p.idpergunta not in (select idpergunta from modelopergunta mp where mp.idModelo = ?)";
 	$rows = $this->bd->query( $sql, array( $id ) )->fetchAll();
@@ -50,7 +52,7 @@ class ModeloControl extends BaseControl {
 	return $resposta;
 	}
 
-	protected function renderTabela($rows) {
+	protected function renderTabela(array $rows): string {
 		$resposta = "<table border='0'><tr>".
 		"<th></th>".
 		"<th>Código</th>".
@@ -74,19 +76,19 @@ class ModeloControl extends BaseControl {
 		return $resposta;
 	}
 
-	function inserir($model){
+	function inserir($model): bool {
 		$sql = "insert into ".$this->tabela." (nome) values ( ? )";
 		$this->bd->query( $sql, array( $model->nome ) );
 		return true;
 	}
 
-	function atualizar($model){
+	function atualizar($model): bool {
 		$sql = "update ".$this->tabela." set nome = ? where idModelo = ?";
 		$this->bd->query( $sql, array( $model->nome, $model->idModelo ) );
 		return true;
 	}
 
-	function apagar($id){
+	function apagar($id): bool {
 		// FK RESTRICT (registro->modelo): modelo com checklist respondido não
 		// pode ser apagado. Suas associações (modelopergunta) somem em cascata.
 		$sql = "delete from ".$this->tabela." where idModelo = ?";

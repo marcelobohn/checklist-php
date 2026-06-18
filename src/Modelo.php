@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class Modelo
@@ -22,7 +24,7 @@ class Modelo
 	var $tabela = "modelo";
 
 	/* Métodos get e set das propriedade */
-	function setIdModelo( $idModelo )
+	function setIdModelo( $idModelo ): void
 	{
 		$this->idModelo = $idModelo;
 	}
@@ -31,7 +33,7 @@ class Modelo
 		return $this->idModelo;
 	}
 
-	function setNome( $nome )
+	function setNome( $nome ): void
 	{
 		$this->nome = $nome;
 	}
@@ -40,7 +42,7 @@ class Modelo
 		return $this->nome;
 	}
 
-	function setModelo($idModelo) {
+	function setModelo($idModelo): bool {
 		$sql = "select * from ".$this->tabela." where idModelo = ?";
 		$r = $this->bd->query( $sql, array( $idModelo ) )->fetch();
 		if( $r )	{

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class UsuarioControl extends BaseControl {
@@ -7,7 +9,7 @@ class UsuarioControl extends BaseControl {
 	var $tabela = "usuario";
 	protected $colunaBusca = "nome";
 
-	protected function renderTabela($rows) {
+	protected function renderTabela(array $rows): string {
 		$resposta = "<table border='0'><tr>".
 		"<th></th>".
 		"<th>Código</th>".
@@ -32,14 +34,14 @@ class UsuarioControl extends BaseControl {
 		return $resposta;
 	}
 
-	function inserir($model){
+	function inserir($model): bool {
 		$senhaHash = password_hash( $model->senha, PASSWORD_DEFAULT );
 		$sql = "insert into ".$this->tabela." (nome, senha, admin) values ( ?, ?, ? )";
 		$this->bd->query( $sql, array( $model->nome, $senhaHash, $model->admin ) );
 		return true;
 	}
 
-	function atualizar($model){
+	function atualizar($model): bool {
 		// Só atualiza a senha quando uma nova é informada; vazia mantém a atual.
 		if ($model->senha !== null && $model->senha !== "") {
 			$senhaHash = password_hash( $model->senha, PASSWORD_DEFAULT );
@@ -52,7 +54,7 @@ class UsuarioControl extends BaseControl {
 		return true;
 	}
 
-	function apagar($id){
+	function apagar($id): bool {
 		$sql = "delete from ".$this->tabela." where idUsuario = ?";
 		$this->bd->query( $sql, array( $id ) );
 		return true;

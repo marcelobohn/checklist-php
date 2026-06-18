@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 /**
@@ -25,7 +27,7 @@ abstract class BaseControl
 		$this->bd = new ConexaoBD();
 	}
 
-	function getLista($p,$pag) {
+	function getLista($p, $pag): string {
 		$resposta = "";
 		$where = " where 1=1 ";
 		$params = array();
@@ -55,5 +57,5 @@ abstract class BaseControl
 	}
 
 	/** Renderiza a tabela HTML da listagem (cabeçalhos + linhas). */
-	abstract protected function renderTabela($rows);
+	abstract protected function renderTabela(array $rows): string;
 }

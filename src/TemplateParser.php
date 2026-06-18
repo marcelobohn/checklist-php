@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class TemplateParser
@@ -7,12 +9,12 @@ class TemplateParser
 	private $output;
 
 	//construtor faz a carga do template
-	function __construct( $templateFile='template.html' ){
+	function __construct(string $templateFile = 'template.html'){
 		(file_exists($templateFile)) ? $this->output=file_get_contents($templateFile) : die('Erro: Arquivo '.$templateFile.' não encontrado');
 	}
 
 	//faz a substituição
-	function parseTemplate($tags=array()){
+	function parseTemplate(array $tags = array()): void {
 		if(count($tags)>0){
 			foreach($tags as $tag=>$data){
 				$data = (file_exists($data)) ? $this->parseFile($data) : $data;
@@ -25,7 +27,7 @@ class TemplateParser
 	}
 
 	//Enquanto o buffer de saída estiver ativo, não é enviada a saída do script
-	function parseFile($file){
+	function parseFile(string $file): string {
 		//Ativar o buffer de saída.
 		ob_start();
 		include($file);
@@ -37,7 +39,7 @@ class TemplateParser
 	}
 
 	//Exibe o template
-	function display(){
+	function display(): string {
 		return $this->output;
 	}
 }

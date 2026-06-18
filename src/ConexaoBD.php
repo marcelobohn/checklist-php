@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class ConexaoBD
 {
-	/** @var \PDO */
-	public $con;
-	public $status_online = false;
+	public ?\PDO $con = null;
+	public bool $status_online = false;
 
 	//** Construtor que abre a conexao (PDO)
 	function __construct()
@@ -46,7 +47,7 @@ class ConexaoBD
 	 *   $stmt = $bd->query("select * from usuario where nome = ?", array($nome));
 	 *   foreach ($stmt->fetchAll() as $r) { ... }
 	 */
-	function query($sql, $params = array())
+	function query(string $sql, array $params = array()): \PDOStatement
 	{
 		$stmt = $this->con->prepare($sql);
 		$stmt->execute($params);
@@ -54,7 +55,7 @@ class ConexaoBD
 	}
 
 	//** Fecha a conexao
-	function fechaBd()
+	function fechaBd(): void
 	{
 		$this->con = null;
 	}

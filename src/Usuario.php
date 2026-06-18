@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class Usuario
@@ -25,7 +27,7 @@ class Usuario
 	var $tabela = "usuario";
 
 	/* Métodos get e set das propriedade */
-	function setIdUsuario( $idUsuario )
+	function setIdUsuario( $idUsuario ): void
 	{
 		$this->idUsuario = $idUsuario;
 	}
@@ -34,7 +36,7 @@ class Usuario
 		return $this->idUsuario;
 	}
 
-	function setNome( $nome )
+	function setNome( $nome ): void
 	{
 		$this->nome = $nome;
 	}
@@ -43,7 +45,7 @@ class Usuario
 		return $this->nome;
 	}
 
-	function setSenha( $senha )
+	function setSenha( $senha ): void
 	{
 		$this->senha = $senha;
 	}
@@ -52,7 +54,7 @@ class Usuario
 		return $this->senha;
 	}
 
-	function setAdmin( $admin )
+	function setAdmin( $admin ): void
 	{
 		$this->admin = $admin;
 	}
@@ -61,7 +63,7 @@ class Usuario
 		return $this->admin;
 	}
 
-	function setUsuario($idUsuario) {
+	function setUsuario($idUsuario): bool {
 		$sql = "select * from ".$this->tabela." where idUsuario = ?";
 		$r = $this->bd->query( $sql, array( $idUsuario ) )->fetch();
 		if( $r )	{

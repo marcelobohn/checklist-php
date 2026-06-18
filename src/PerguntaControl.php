@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class PerguntaControl extends BaseControl {
@@ -7,7 +9,7 @@ class PerguntaControl extends BaseControl {
 	var $tabela = "pergunta";
 	protected $colunaBusca = "descricao";
 
-	function getListaResposta($id) {
+	function getListaResposta($id): string {
 		$resposta = "";
 		$resposta .=  "<span style=\"font-size:16px; float:left;\">Respostas</span> &nbsp;&nbsp;&nbsp; ";
 		$resposta .=  "<a href=\"javascript:incluiResposta(idPergunta.value)\">Inclui resposta</a><br />";
@@ -22,7 +24,7 @@ class PerguntaControl extends BaseControl {
 		return $resposta;
 	}
 
-	protected function renderTabela($rows) {
+	protected function renderTabela(array $rows): string {
 		$resposta = "<table border='0'><tr>".
 		"<th></th>".
 		"<th>C&oacute;digo</th>".
@@ -48,19 +50,19 @@ class PerguntaControl extends BaseControl {
 		return $resposta;
 	}
 
-	function inserir($model){
+	function inserir($model): bool {
 		$sql = "insert into pergunta (descricao, marcar, resposta) values ( ?, ?, ? )";
 		$this->bd->query( $sql, array( $model->descricao, $model->marcar, $model->resposta ) );
 		return true;
 	}
 
-	function atualizar($model){
+	function atualizar($model): bool {
 		$sql = "update pergunta set descricao = ?, marcar = ?, resposta = ? where idPergunta = ?";
 		$this->bd->query( $sql, array( $model->descricao, $model->marcar, $model->resposta, $model->idPergunta ) );
 		return true;
 	}
 
-	function apagar($id){
+	function apagar($id): bool {
 		// FK RESTRICT (registroitem->pergunta): pergunta usada em checklist
 		// respondido não pode ser apagada. Suas respostas e associações de
 		// modelo (modelopergunta) somem em cascata.

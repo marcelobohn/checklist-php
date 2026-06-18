@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class Pergunta
@@ -24,7 +26,7 @@ class Pergunta
 	var $resposta;
 
 	/* Métodos get e set das propriedade */
-	function setIdPergunta( $idPergunta )
+	function setIdPergunta( $idPergunta ): void
 	{
 		$this->idPergunta = $idPergunta;
 	}
@@ -33,7 +35,7 @@ class Pergunta
 		return $this->idPergunta;
 	}
 
-	function setDescricao( $descricao )
+	function setDescricao( $descricao ): void
 	{
 		$this->descricao = $descricao;
 	}
@@ -42,7 +44,7 @@ class Pergunta
 		return $this->descricao;
 	}
 
-	function setMarcar( $marcar )
+	function setMarcar( $marcar ): void
 	{
 		$this->marcar = $marcar;
 	}
@@ -51,7 +53,7 @@ class Pergunta
 		return $this->marcar;
 	}
 
-	function setResposta( $resposta )
+	function setResposta( $resposta ): void
 	{
 		$this->resposta = $resposta;
 	}
@@ -60,7 +62,7 @@ class Pergunta
 		return $this->resposta;
 	}
 
-	function setPergunta($idPergunta) {
+	function setPergunta($idPergunta): bool {
 		$sql = "select * from pergunta where idPergunta = ?";
 		$r = $this->bd->query( $sql, array( $idPergunta ) )->fetch();
 		if( $r )	{

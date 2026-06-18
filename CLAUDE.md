@@ -132,6 +132,12 @@ O autoloader é carregado nos bootstraps: `block.php` (endpoints autenticados),
 `template/start.php` (páginas de índice) e `login.php`. Dentro do `namespace App`,
 classes globais usam `\` (ex.: `\PDO`, `\PDOException`).
 
+Todos os arquivos de `src/` usam **`declare(strict_types=1)`** com tipagem
+**gradual**: tipos de retorno (`: bool`/`: string`/`: void`/`: \PDOStatement`) e
+de parâmetro nos métodos internos seguros. Setters que recebem dados crus de
+`$_REQUEST` (string, às vezes vazia) e a propriedade `$bd` (injetada por um fake
+nos testes) permanecem **sem tipo**, de propósito.
+
 ### Infraestrutura comum (raiz)
 
 - `template/start.php` — carrega o autoloader, `session_start()`, inclui `config.php` e monta `$head` (CSS/JS).
@@ -286,3 +292,4 @@ de cada release em <https://github.com/marcelobohn/checklist-php/releases>.
 | `v1.8.1` | Atalhos `composer db:backup` / `db:restore` / `db:reset` (alias) | #24 |
 | `v1.9.0` | **Testes unitários** das classes de `src/App` (fake de `ConexaoBD`, sem app/DB) | #25 |
 | `v1.9.1` | CI: bump `actions/checkout` v4 → v5 (silencia aviso de Node 20) | #26 |
+| `v1.9.2` | **Tipagem gradual** (`declare(strict_types=1)` + type hints) em `src/App` | #28 |
