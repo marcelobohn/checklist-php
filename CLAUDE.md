@@ -72,8 +72,8 @@ Dois testsuites em PHPUnit:
   **pulados** (skip) com uma mensagem clara.
 - **Unitário** (`tests/Unit/`): testa as classes de `src/App` em **isolamento**,
   sem app nem banco — injeta um *fake* de `ConexaoBD` (via reflection) e cobre
-  `h()`, a paginação/render do `getLista`, o SQL de `inserir`/`atualizar`/`apagar`
-  e os getters/setters das entidades.
+  `h()`, a paginação/render do `getLista`, o SQL de `inserir`/`atualizar`/`apagar`,
+  os getters/setters das entidades e o `Dispatcher` de ações.
 
 ```bash
 docker compose up -d --build   # app no ar (para os funcionais)
@@ -94,7 +94,7 @@ mesmo trio de arquivos (o passo-a-passo de criação está em `novo cadastro.txt
 |------------------------|---------------------------------------------------------------------|
 | `<mod>/config.php`     | Define `$Titulo`, `$ArquivoJS`, `$Aplicativo` (roteamento)          |
 | `<mod>/index.php`      | Página do módulo, montada pelo template engine                      |
-| `<mod>/<mod>.model.php`| *dispatcher* de `?acao=grava` / `?acao=apaga` (usa as classes de `src/App`) |
+| `<mod>/<mod>.model.php`| registra os handlers de `?acao=grava` / `?acao=apaga` no `App\Dispatcher` (usa as classes de `src/App`) |
 | `<mod>/<mod>.view.php` | HTML do formulário/listagem                                         |
 | `js/<mod>.js`          | Front-end: chamadas AJAX (jQuery 3.7.1) para os arquivos acima      |
 
@@ -123,6 +123,7 @@ As classes ficam em `src/`, namespace `App\`, carregadas por **autoload do Compo
 |--------|---------|
 | `App\ConexaoBD` | `src/ConexaoBD.php` — PDO. Ver [Acesso a dados](#acesso-a-dados-pdo) |
 | `App\TemplateParser` | `src/TemplateParser.php` — *template engine* (`{Tag}` via `ob_start`/`include`) |
+| `App\Dispatcher` | `src/Dispatcher.php` — roteador simples de `?acao=`: `on('acao', handler)` + `run($acao)`; ação ausente/desconhecida é no-op. Usado nos `<mod>.model.php` |
 | `App\BaseControl` | `src/BaseControl.php` — base abstrata: `getLista` paginado + `renderTabela()` (template method) |
 | `App\Pergunta` / `App\PerguntaControl` | `src/Pergunta.php` / `src/PerguntaControl.php` (control estende `BaseControl`) |
 | `App\Modelo` / `App\ModeloControl` | `src/Modelo.php` / `src/ModeloControl.php` (control estende `BaseControl`) |
